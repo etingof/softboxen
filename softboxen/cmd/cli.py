@@ -19,7 +19,7 @@ def main():
         '-v', '--version', action='version', version='%(prog)s ' + __version__
     )
 
-    args = parser.parse_args()
+    parser.parse_args()
 
 
 if __name__ == '__main__':
