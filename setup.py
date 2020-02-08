@@ -69,7 +69,7 @@ params = {
     'packages': ['softboxen'],
     'entry_points': {
         'console_scripts': [
-            'softboxentool = softboxen.softboxentool:main'
+            'softboxen-cli = softboxen.cmd.cli:main'
         ]
     },
     'cmdclass': {
