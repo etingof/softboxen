@@ -1,0 +1,26 @@
+language: python
+cache: pip
+matrix:
+  include:
+  - python: '3.6'
+  - python: '3.7'
+  - python: '3.8'
+    env: LINT=true DOCS=true
+  - os: linux
+    dist: trusty
+    python: 'nightly'
+  - os: linux
+    dist: trusty
+    python: 'pypy3'
+install:
+  - if [ "$LINT" == "true" ]; then pip install flake8 isort; fi
+  - pip install -r requirements.txt -r test-requirements.txt
+  - pip install -e .
+script:
+  - if [ "$LINT" == "true" ]; then flake8 ./softboxen ./tests ./setup.py; fi
+  - if [ "$LINT" == "true" ]; then isort --check-only -rc softboxen tests setup.py; fi
+  - if [ "$DOCS" == "true" ]; then cd ./docs && make html && cd -; fi
+  - PYTHONPATH=.:$PYTHONPATH python tests/__main__.py
+after_success:
+  - PYTHONPATH=.:$PYTHONPATH coverage run --omit=*test* tests/__main__.py
+  - codecov
