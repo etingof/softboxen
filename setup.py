@@ -66,7 +66,7 @@ params = {
     'platforms': ['any'],
     'classifiers': [x for x in CLASSIFIERS.split('\n') if x],
     'license': 'BSD',
-    'packages': ['softboxen'],
+    'packages': setuptools.find_packages(),
     'entry_points': {
         'console_scripts': [
             'softboxen-cli = softboxen.cmd.cli:main'
