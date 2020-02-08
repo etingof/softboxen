@@ -18,7 +18,7 @@ install:
   - pip install -e .
 script:
   - if [ "$LINT" == "true" ]; then flake8 ./softboxen ./tests ./setup.py; fi
-  - if [ "$LINT" == "true" ]; then isort --check-only --force_alphabetical_sort -rc softboxen tests setup.py; fi
+  - if [ "$LINT" == "true" ]; then isort --check-only -rc softboxen tests setup.py; fi
   - if [ "$DOCS" == "true" ]; then cd ./docs && make html && cd -; fi
   - PYTHONPATH=.:$PYTHONPATH python tests/__main__.py
 after_success:

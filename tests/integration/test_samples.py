@@ -7,7 +7,6 @@
 import sys
 import unittest
 
-
 suite = unittest.TestLoader().loadTestsFromModule(sys.modules[__name__])
 
 if __name__ == '__main__':

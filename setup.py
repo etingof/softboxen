@@ -8,7 +8,7 @@
 import os
 import unittest
 
-from setuptools import setup, Command
+import setuptools
 
 CLASSIFIERS = """\
 Development Status :: 3 - Alpha
@@ -29,7 +29,7 @@ Topic :: Software Development :: Libraries :: Python Modules
 """
 
 
-class PyTest(Command):
+class PyTest(setuptools.Command):
     user_options = []
 
     def initialize_options(self):
@@ -79,4 +79,4 @@ params = {
     'zip_safe': True
 }
 
-setup(**params)
+setuptools.setup(**params)
