@@ -1,0 +1,44 @@
+{
+  "name": "port 1",
+  "description": "Port 1",
+  "mode": "access",
+  "access_vlan": {
+    "_links": {
+      "self": "boxen/1/ports/1/vlans/1/index.json",
+      "collection": "boxen/1/ports/1/vlans/index.json"
+    }
+  },
+  "trunk_vlans": {
+    "_links": {
+      "self": "boxen/1/ports/1/trunk_vlans/index.json"
+    }
+  },
+  "trunk_native_vlan": {
+    "_links": {
+      "self": "boxen/1/ports/1/vlans/1/index.json",
+      "collection": "boxen/1/ports/1/vlans/index.json"
+    }
+  },
+  "trunk_encapsulation_mode": null,
+  "shutdown": false,
+  "vrf": null,
+  "speed": "10g",
+  "auto_negotiation": true,
+  "aggregation_membership": null,
+  "mtu": 1450,
+  "ip_helpers": [],
+  "secondary_ips": [],
+  "ips": [],
+  "lldp_transmit": null,
+  "lldp_receive": null,
+  "lldp_med": null,
+  "lldp_med_transmit_capabilities": null,
+  "lldp_med_transmit_network_policy": null,
+  "spanning_tree": null,
+  "spanning_tree_portfast": null,
+  "ntp": false,
+  "_links": {
+    "self": "boxen/1/ports/1/index.json",
+    "collection": "boxen/1/ports/index.json"
+  }
+}

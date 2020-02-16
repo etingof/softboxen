@@ -1,0 +1,26 @@
+{
+  "vendor": "cisco",
+  "model": "5300",
+  "description": "Cisco 5300",
+  "hostname": "rt-1",
+  "mgmt_address": "10.0.0.1",
+  "credentials": {
+    "_links": {
+      "self": "boxen/1/credentials/index.json"
+    }
+  },
+  "routes": {
+    "_links": {
+      "self": "boxen/1/routes/index.json"
+    }
+  },
+    "ports": {
+    "_links": {
+      "self": "boxen/1/ports/index.json"
+    }
+  },
+  "_links": {
+    "self": "boxen/1/index.json",
+    "collection": "boxen/index.json"
+  }
+}

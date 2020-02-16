@@ -1,0 +1,11 @@
+{
+  "description": "Soft boxen root service",
+  "boxen": {
+    "_links": {
+      "self": "boxen/index.json"
+    }
+  },
+  "_links": {
+    "self": "index.json"
+  }
+}

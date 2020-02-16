@@ -4,10 +4,11 @@
 # Copyright (c) 2020, Ilya Etingof <etingof@gmail.com>
 # License: https://github.com/etingof/softboxen/LICENSE.rst
 #
+
 import unittest
 
 suite = unittest.TestLoader().loadTestsFromNames(
-    ['tests.unit.client.__main__.suite']
+    ['tests.unit.client.resources.__main__.suite']
 )
 
 

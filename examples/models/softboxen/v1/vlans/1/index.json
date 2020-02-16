@@ -1,0 +1,9 @@
+{
+  "number": 1,
+  "name": "segment 1",
+  "description": "VLAN 1",
+  "_links": {
+    "self": "vlans/1/index.json",
+    "collection": "vlans/index.json"
+  }
+}

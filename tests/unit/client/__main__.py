@@ -4,6 +4,7 @@
 # Copyright (c) 2020, Ilya Etingof <etingof@gmail.com>
 # License: https://github.com/etingof/softboxen/LICENSE.rst
 #
+
 import unittest
 
 suite = unittest.TestLoader().loadTestsFromNames(

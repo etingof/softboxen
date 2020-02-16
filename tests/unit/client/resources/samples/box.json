@@ -1,0 +1,26 @@
+{
+  "vendor": "cisco",
+  "model": "5300",
+  "description": "Cisco 5300",
+  "hostname": "rt-1",
+  "mgmt_address": "10.0.0.1",
+  "credentials": {
+    "_links": {
+      "self": "/softboxen/v1/boxen/1/credentials"
+    }
+  },
+  "routes": {
+    "_links": {
+      "self": "/softboxen/v1/boxen/1/routes"
+    }
+  },
+  "ports": {
+    "_links": {
+      "self": "/softboxen/v1/boxen/1/ports"
+    }
+  },
+  "_links": {
+    "self": "/softboxen/v1/boxen/1",
+    "collection": "/softboxen/v1/boxen"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "count": 1,
+  "members": [
+    {
+      "vendor": "cisco",
+      "model": "5300",
+      "_links": {
+        "self": "/softboxen/v1/boxen/1"
+      }
+    }
+  ],
+  "_links": {
+    "self": "/softboxen/v1/boxen"
+  }
+}

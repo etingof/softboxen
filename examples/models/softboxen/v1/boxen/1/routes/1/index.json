@@ -1,0 +1,9 @@
+{
+  "dst": "10.0.0.0/24",
+  "gw": "10.0.0.1",
+  "metric": 0,
+  "_links": {
+    "self": "boxen/1/routes/1/index.json",
+    "collection": "boxen/1/routes/index.json"
+  }
+}

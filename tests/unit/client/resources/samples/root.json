@@ -1,0 +1,11 @@
+{
+  "description": "Soft boxen root service",
+  "boxen": {
+    "_links": {
+      "self": "/softboxen/v1/boxen"
+    }
+  },
+  "_links": {
+    "self": "/softboxen/v1"
+  }
+}

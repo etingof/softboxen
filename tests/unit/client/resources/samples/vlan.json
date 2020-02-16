@@ -1,0 +1,9 @@
+{
+  "number": 1,
+  "name": "segment 1",
+  "description": "VLAN 1",
+  "_links": {
+    "self": "/softboxen/v1/vlans/1",
+    "collection": "/softboxen/v1/vlans"
+  }
+}

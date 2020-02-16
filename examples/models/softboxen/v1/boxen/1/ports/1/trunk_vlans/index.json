@@ -1,0 +1,13 @@
+{
+  "count": 1,
+  "members": [
+    {
+      "_links": {
+        "self": "boxen/1/ports/1/vlans/1/index.json"
+      }
+    }
+  ],
+  "_links": {
+    "self": "boxen/1/ports/1/trunk_vlans/index.json"
+  }
+}
