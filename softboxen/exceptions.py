@@ -47,6 +47,11 @@ class InvalidParameterValueError(SoftboxenError):
                'Valid values are: %(valid_values)s')
 
 
+class ExtensionNotFoundError(SoftboxenError):
+    message = ('Cannot find CLI extension for %(vendor)s, %(model)s, '
+               '%(version)s')
+
+
 class HTTPError(SoftboxenError):
     """Basic exception for HTTP errors"""
 

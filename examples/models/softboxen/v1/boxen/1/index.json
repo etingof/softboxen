@@ -1,10 +1,10 @@
 {
-  "vendor": "cisco",
-  "model": "5300",
+  "vendor": "example",
+  "model": "switch",
   "version": "1",
   "uuid": "123e4567-e89b-12d3-a456-426655440000",
-  "description": "Cisco 5300",
-  "hostname": "rt-1",
+  "description": "Imaginary example switch instance",
+  "hostname": "example-01",
   "mgmt_address": "10.0.0.1",
   "credentials": {
     "_links": {
