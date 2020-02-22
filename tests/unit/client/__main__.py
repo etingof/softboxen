@@ -8,7 +8,7 @@
 import unittest
 
 suite = unittest.TestLoader().loadTestsFromNames(
-    ['tests.unit.client.__main__.suite']
+    ['tests.unit.client.resources.box.__main__.suite']
 )
 
 
