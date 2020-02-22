@@ -1,6 +1,8 @@
 {
   "vendor": "cisco",
   "model": "5300",
+  "version": "1",
+  "uuid": "123e4567-e89b-12d3-a456-426655440000",
   "description": "Cisco 5300",
   "hostname": "rt-1",
   "mgmt_address": "10.0.0.1",
