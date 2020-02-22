@@ -5,14 +5,18 @@
 # License: https://github.com/etingof/softboxen/LICENSE.rst
 #
 import argparse
-import sys
+import logging
 import os
+import sys
 from urllib.parse import urlparse
 
 from softboxen import __version__
-from softboxen.client.resources import root
-from softboxen.client import rest_client
 from softboxen.cli import factory
+from softboxen.client import rest_client
+from softboxen.client.resources import root
+from softboxen import exceptions
+
+LOG = logging.getLogger(__name__)
 
 
 def main():
@@ -42,6 +46,11 @@ def main():
         '--list-boxen', action='store_true',
         help='Discover and print out existing box models')
 
+    parser.add_argument(
+        '--box-uuid', metavar='<UUID>', type=str,
+        help='Run CLI instance using specified box instance as a '
+             'backend model')
+
     args = parser.parse_args()
 
     if args.list_clis:
@@ -67,10 +76,34 @@ def main():
     root_resource = root.Root(conn, path=filename)
 
     if args.list_boxen:
-        for box in root_resource.boxen:
+        for model in root_resource.boxen:
             print('Vendor %s, model %s, version %s, instance %s' % (
-                  box.vendor, box.model, box.version, box.uuid))
+                  model.vendor, model.model, model.version, model.uuid))
         return 0
+
+    if not args.box_uuid:
+        parser.error('--box-uuid is required')
+        return
+
+    for model in root_resource.boxen:
+        if model.uuid == args.box_uuid:
+            LOG.debug('Found requested box with UUID %s', model.uuid)
+            break
+
+    else:
+        parser.error('Requested box with UUID %s not found' % args.box_uuid)
+        return
+
+    try:
+        cli = factory.get_box(model.vendor, model.model, model.version)
+
+    except exceptions.ExtensionNotFoundError as exc:
+        parser.error(exc)
+        return
+
+    command_processor = cli(model, sys.stdin, sys.stdout)
+
+    command_processor.loop()
 
 
 if __name__ == '__main__':

@@ -5,8 +5,11 @@
 # License: https://github.com/etingof/softboxen/LICENSE.rst
 #
 
-from softboxen.cli.base import CommandProcessor
+from softboxen.cli import base
 
 
-class CommandProcessor(CommandProcessor):
-    """"""
+class CommandProcessor(base.CommandProcessor):
+    """Create CLI REPR loop for example switch."""
+    VENDOR = 'example'
+    MODEL = 'switch'
+    VERSION = '1'

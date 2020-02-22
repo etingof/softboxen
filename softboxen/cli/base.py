@@ -7,16 +7,20 @@
 
 
 class CommandProcessor:
+    """Create CLI REPR loop.
+
+    :param model: box model
+    :param input: terminal input stream
+    :param output: terminal output stream
+    :param subprocessor: child REPR loop to handle context-specific
+        commands
+    """
     VENDOR = '?'
     MODEL = '?'
     VERSION = '?'
 
     def __init__(self, model, input, output, subprocessor=None):
-        """Create CLI REPR loop object.
+        return
 
-        :param model: box model
-        :param input: terminal input stream
-        :param output: terminal output stream
-        :param subprocessor: child REPR loop to handle context-specific
-            commands
-        """
+    def loop(self):
+        """Run CLI REPR loop."""
