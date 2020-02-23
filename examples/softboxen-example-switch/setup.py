@@ -68,7 +68,7 @@ params = {
     'license': 'BSD',
     'packages': setuptools.find_packages(),
     'entry_points': {
-        'softboxen.cli': 'example.switch.1 = softboxen_example_switch.main:CommandProcessor'
+        'softboxen.cli': 'example.switch.1 = softboxen_example_switch.main:PreLoginCommandProcessor'
     },
     'cmdclass': {
         'test': PyTest,

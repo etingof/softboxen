@@ -6,10 +6,48 @@
 #
 
 from softboxen.cli import base
+from softboxen import exceptions
 
 
-class CommandProcessor(base.CommandProcessor):
+class BaseCommandProcessor(base.CommandProcessor):
     """Create CLI REPR loop for example switch."""
     VENDOR = 'example'
     MODEL = 'switch'
     VERSION = '1'
+
+
+class PreLoginCommandProcessor(BaseCommandProcessor):
+    """"""
+    def on_unknown_command(self, command, *args, context=None):
+        subprocessor = self._create_subprocessor(
+            LoginCommandProcessor, 'login')
+
+        context['username'] = command
+
+        subprocessor.loop(context=context)
+
+
+class LoginCommandProcessor(BaseCommandProcessor):
+
+    def on_unknown_command(self, command, *args, context=None):
+        username = context.pop('username')
+        password = command
+
+        for creds in self._model.credentials:
+            if creds.user == username and creds.password == password:
+                break
+
+        else:
+            text = self._render('password', context=context)
+            self._write(text)
+            raise exceptions.TerminalExitError()
+
+        subprocessor = self._create_subprocessor(
+            MainLoopCommandProcessor, 'login', 'mainloop')
+
+        subprocessor.loop(context=context)
+
+
+class MainLoopCommandProcessor(BaseCommandProcessor):
+    pass
+

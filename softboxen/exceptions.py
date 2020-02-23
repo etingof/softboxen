@@ -52,6 +52,16 @@ class ExtensionNotFoundError(SoftboxenError):
                '%(version)s')
 
 
+class TerminalExitError(SoftboxenError):
+    message = 'Terminal connection closed'
+
+
+class TemplateError(SoftboxenError):
+    message = ('Jinja2 template error at command processor %(processor)s '
+               'while processing state %(command)s, template root '
+               '%(template_root)s: %(error)s')
+
+
 class HTTPError(SoftboxenError):
     """Basic exception for HTTP errors"""
 

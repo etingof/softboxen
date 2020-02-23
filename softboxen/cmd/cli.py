@@ -38,6 +38,10 @@ def main():
         help='Disable TLS X.509 validation.')
 
     parser.add_argument(
+        '--template-root', metavar='<DIR>', type=str,
+        help='Top directory of CLI command loop Jinja2 templates')
+
+    parser.add_argument(
         '--list-clis', action='store_true',
         help='Discover and print out installed softboxen CLI '
              'implementations')
@@ -101,7 +105,11 @@ def main():
         parser.error(exc)
         return
 
-    command_processor = cli(model, sys.stdin, sys.stdout)
+    stdin = os.fdopen(sys.stdin.fileno(), 'rb', 0)
+    stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
+
+    command_processor = cli(
+        model, stdin, stdout, template_root=args.template_root)
 
     command_processor.loop()
 
