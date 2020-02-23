@@ -93,7 +93,7 @@ class CommandProcessor:
             [c for c in dir(self) if c.startswith('do_' + command)])
 
         if len(matching) >= 1:
-            return getattr(self, matching[0]), args
+            return getattr(self, matching[0]), command, args
 
         if hasattr(self, 'on_unknown_command'):
             LOG.debug('Using unknown command handler for command '

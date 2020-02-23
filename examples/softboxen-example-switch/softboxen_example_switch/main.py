@@ -43,11 +43,43 @@ class LoginCommandProcessor(BaseCommandProcessor):
             raise exceptions.TerminalExitError()
 
         subprocessor = self._create_subprocessor(
-            MainLoopCommandProcessor, 'login', 'mainloop')
+            UserViewCommandProcessor, 'login', 'mainloop')
 
         subprocessor.loop(context=context)
 
 
-class MainLoopCommandProcessor(BaseCommandProcessor):
+class UserViewCommandProcessor(BaseCommandProcessor):
+
+    def do_enable(self, command, *args, context=None):
+
+        subprocessor = self._create_subprocessor(
+            EnableCommandProcessor, 'login', 'mainloop', 'enable')
+
+        subprocessor.loop(context=context)
+
+
+class EnableCommandProcessor(BaseCommandProcessor):
+
+    def on_unknown_command(self, command, *args, context=None):
+        username = '<enable>'
+        password = command
+
+        for creds in self._model.credentials:
+            if creds.user == username and creds.password == password:
+                break
+
+        else:
+            text = self._render('password', context=context)
+            self._write(text)
+            raise exceptions.TerminalExitError()
+
+        subprocessor = self._create_subprocessor(
+            AdminCommandProcessor, 'login', 'mainloop', 'enable', 'admin')
+
+        subprocessor.loop(context=context)
+
+
+class AdminCommandProcessor(BaseCommandProcessor):
     pass
+
 
