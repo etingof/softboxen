@@ -28,6 +28,12 @@ class Box(base.Resource):
     model = base.Field('model', required=True)
     """Network device model e.g. 5300"""
 
+    version = base.Field('version', required=True)
+    """Network device model version e.g. 1.2.3"""
+
+    uuid = base.Field('uuid', required=True)
+    """Network device unique instance ID"""
+
     description = base.Field('description')
     """The description of this box"""
 

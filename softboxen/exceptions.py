@@ -47,6 +47,25 @@ class InvalidParameterValueError(SoftboxenError):
                'Valid values are: %(valid_values)s')
 
 
+class ExtensionNotFoundError(SoftboxenError):
+    message = ('Cannot find CLI extension for %(vendor)s, %(model)s, '
+               '%(version)s')
+
+
+class TerminalExitError(SoftboxenError):
+    message = 'Terminal connection closed'
+
+
+class TemplateError(SoftboxenError):
+    message = ('Jinja2 template error at command processor %(processor)s '
+               'while processing state %(command)s, template root '
+               '%(template_root)s: %(error)s')
+
+
+class CommandSyntaxError(SoftboxenError):
+    message = 'Command syntax error: %(command)s'
+
+
 class HTTPError(SoftboxenError):
     """Basic exception for HTTP errors"""
 
