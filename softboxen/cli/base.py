@@ -20,23 +20,22 @@ class CommandProcessor:
     :param model: box model
     :param input: terminal input stream
     :param output: terminal output stream
-    :param subprocessor: child REPR loop to handle context-specific
-        commands
     :param template_root: location of Jinja2 templates for rendering
         command output by this command processor
     :param scopes: a sequence of names of nesting command processors
         followed by the name of this command processor
     """
+
+    # Identify backend models to load and use
     VENDOR = '?'
     MODEL = '?'
     VERSION = '?'
 
     def __init__(self, model, input_stream, output_stream,
-                 subprocessor=None, template_root=None, scopes=()):
+                 template_root=None, scopes=()):
         self._model = model
         self._input = input_stream
         self._output = output_stream
-        self._subprocessor = subprocessor
         self._scopes = scopes
         self._template_root = template_root
         self._template_dir = os.path.join(
@@ -165,21 +164,12 @@ class CommandProcessor:
         self._write(text)
 
     def on_cycle(self, context):
-        if self._subprocessor:
-            return self._subprocessor.on_cycle(context)
-
         self._render_from_template('on_cycle', context)
 
     def on_enter(self, context):
-        if self._subprocessor:
-            return self._subprocessor.on_enter(context)
-
         self._render_from_template('on_enter', context)
 
     def on_exit(self, context):
-        if self._subprocessor:
-            return self._subprocessor.on_exit()
-
         self._render_from_template('on_exit', context)
 
     @property
