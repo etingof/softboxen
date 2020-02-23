@@ -1,0 +1,30 @@
+
+Information of Eth {{ context['port'].name }}
+ Basic Information:
+  Port Type              : {{ context['port'].speed }}
+  MAC Address            : 80-A2-35-7A-66-69
+ Configuration:
+  Name                   : {{ context['port'].description }}
+  Port Admin             : Up
+  Speed-duplex           : Auto
+  Capabilities           : 1000full
+  Broadcast Storm        : Disabled
+  Broadcast Storm Limit  : 500 packets/second
+  Multicast Storm        : Disabled
+  Multicast Storm Limit  : 262143 packets/second
+  Unknown Unicast Storm       : Disabled
+  Unknown Unicast Storm Limit : 262143 packets/second
+  Flow Control           : Disabled
+  VLAN Trunking          : Disabled
+  LACP                   : Disabled
+  MAC Learning           : Enabled
+  Link-up-down Trap      : Enabled
+  Media Type             : None
+  MTU                    : {{ context['port'].mtu }}
+ Current Status:
+  Link Status            : Down
+  Operation Speed-duplex : 1000full
+  Flow Control Type      : None
+  Max Frame Size         : 9216 bytes (9220 bytes for tagged frames)
+  MAC Learning Status    : Enabled
+

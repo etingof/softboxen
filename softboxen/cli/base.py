@@ -143,6 +143,9 @@ class CommandProcessor:
             try:
                 self.process_command(line, context)
 
+            except exceptions.CommandSyntaxError:
+                self.on_error(context)
+
             except exceptions.TerminalExitError:
                 break
 
@@ -172,6 +175,9 @@ class CommandProcessor:
     def on_exit(self, context):
         self._render_from_template('on_exit', context)
 
+    def on_error(self, context):
+        self._render_from_template('on_error', context)
+
     @property
     def comment(self):
         return '!'
@@ -179,3 +185,14 @@ class CommandProcessor:
     @property
     def negation(self):
         return 'no'
+
+    def _shift(self, args, *tokens):
+        for idx, token in enumerate(tokens):
+            if not token.startswith(args[idx]):
+                raise exceptions.CommandSyntaxError(command=' '.join(args))
+
+        try:
+            return args[idx + 1]
+
+        except IndexError:
+            raise exceptions.CommandSyntaxError(command=' '.join(args))

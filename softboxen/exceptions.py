@@ -62,6 +62,10 @@ class TemplateError(SoftboxenError):
                '%(template_root)s: %(error)s')
 
 
+class CommandSyntaxError(SoftboxenError):
+    message = 'Command syntax error: %(command)s'
+
+
 class HTTPError(SoftboxenError):
     """Basic exception for HTTP errors"""
 

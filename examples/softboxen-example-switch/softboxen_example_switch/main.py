@@ -80,6 +80,15 @@ class EnableCommandProcessor(BaseCommandProcessor):
 
 
 class AdminCommandProcessor(BaseCommandProcessor):
-    pass
 
+    def do_show(self, command, *args, context=None):
+        port_name = self._shift(args, 'interface', 'status', 'ethernet')
+        for port in self._model.ports:
+            if port.name == port_name:
+                text = self._render(
+                    'show_interfaces_status_ethernet',
+                    context=dict(context, port=port))
+                self._write(text)
+                return
 
+        raise exceptions.CommandSyntaxError(command=command)
