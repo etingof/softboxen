@@ -14,6 +14,15 @@ import jinja2
 LOG = logging.getLogger(__name__)
 
 
+class Context:
+    """Turn a dict into an object.
+
+    The intension is to simplify context access in the templates.
+    """
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+
 class CommandProcessor:
     """Create CLI REPR loop.
 
@@ -58,7 +67,7 @@ class CommandProcessor:
                 command=command,
                 args=args,
                 model=self._model,
-                context=context)
+                context=Context(**context))
 
         except jinja2.exceptions.TemplateError as exc:
             raise exceptions.TemplateError(

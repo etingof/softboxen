@@ -1,10 +1,10 @@
 
-Information of Eth {{ context['port'].name }}
+Information of Eth {{ context.port.name }}
  Basic Information:
-  Port Type              : {{ context['port'].speed }}
+  Port Type              : {{ context.port.speed }}
   MAC Address            : 80-A2-35-7A-66-69
  Configuration:
-  Name                   : {{ context['port'].description }}
+  Name                   : {{ context.port.description }}
   Port Admin             : Up
   Speed-duplex           : Auto
   Capabilities           : 1000full
@@ -20,7 +20,7 @@ Information of Eth {{ context['port'].name }}
   MAC Learning           : Enabled
   Link-up-down Trap      : Enabled
   Media Type             : None
-  MTU                    : {{ context['port'].mtu }}
+  MTU                    : {{ context.port.mtu }}
  Current Status:
   Link Status            : Down
   Operation Speed-duplex : 1000full
