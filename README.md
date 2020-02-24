@@ -1,5 +1,5 @@
 
-# Network equipment simulator
+# Network equipment CLI simulator
 
 [![PyPI](https://img.shields.io/pypi/v/softboxen.svg?maxAge=1800)](https://pypi.org/project/softboxen)
 [![Python Versions](https://img.shields.io/pypi/pyversions/softboxen.svg)](https://pypi.org/project/softboxen/)
