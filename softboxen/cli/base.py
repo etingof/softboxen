@@ -66,7 +66,12 @@ class CommandProcessor:
                 template_root=self._template_dir, error=exc)
 
     def _default_command_handler(self, command, *args, context=None):
-        text = self._render(command, *args, context=context)
+        try:
+            text = self._render(command, *args, context=context)
+
+        except exceptions.TemplateError:
+            raise exceptions.CommandSyntaxError(command=command)
+
         self._write(text)
 
     def _read(self):
@@ -128,7 +133,7 @@ class CommandProcessor:
     def process_command(self, line, context):
         self._parse_and_execute_command(line, context)
 
-    def loop(self, context=None):
+    def loop(self, context=None, raise_on_exit=True):
         if context is None:
             context = {}
 
@@ -143,10 +148,12 @@ class CommandProcessor:
             try:
                 self.process_command(line, context)
 
-            except exceptions.CommandSyntaxError:
-                self.on_error(context)
+            except exceptions.CommandSyntaxError as exc:
+                self.on_error(dict(context, command=exc.command))
 
             except exceptions.TerminalExitError:
+                if raise_on_exit:
+                    raise
                 break
 
             self.on_cycle(context)
@@ -186,13 +193,20 @@ class CommandProcessor:
     def negation(self):
         return 'no'
 
-    def _shift(self, args, *tokens):
+    def _dissect(self, args, *tokens):
+        values = []
+
         for idx, token in enumerate(tokens):
-            if not token.startswith(args[idx]):
+            try:
+                arg = args[idx]
+
+            except IndexError:
                 raise exceptions.CommandSyntaxError(command=' '.join(args))
 
-        try:
-            return args[idx + 1]
+            if type(token) == type:
+                values.append(arg)
 
-        except IndexError:
-            raise exceptions.CommandSyntaxError(command=' '.join(args))
+            elif not token.startswith(arg):
+                raise exceptions.CommandSyntaxError(command=' '.join(args))
+
+        return values

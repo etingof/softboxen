@@ -65,6 +65,10 @@ class TemplateError(SoftboxenError):
 class CommandSyntaxError(SoftboxenError):
     message = 'Command syntax error: %(command)s'
 
+    def __init__(self, **kwargs):
+        super(CommandSyntaxError, self).__init__(**kwargs)
+        self.command = kwargs.get('command')
+
 
 class HTTPError(SoftboxenError):
     """Basic exception for HTTP errors"""

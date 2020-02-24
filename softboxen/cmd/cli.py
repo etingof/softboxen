@@ -111,7 +111,7 @@ def main():
     command_processor = cli(
         model, stdin, stdout, template_root=args.template_root)
 
-    command_processor.loop()
+    command_processor.loop(raise_on_exit=False)
 
 
 if __name__ == '__main__':
