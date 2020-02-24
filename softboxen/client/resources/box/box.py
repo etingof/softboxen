@@ -9,8 +9,8 @@ import logging
 
 from softboxen.client.resources import base
 from softboxen.client.resources.box import credentials
-from softboxen.client.resources.box import route
 from softboxen.client.resources.box import port
+from softboxen.client.resources.box import route
 
 LOG = logging.getLogger(__name__)
 

@@ -65,6 +65,10 @@ class Port(base.Resource):
             self._conn, base.get_sub_resource_path_by(
                 self, 'trunk_native_vlan'))
 
+    def add_access_vlan(self, name):
+        # TODO(etingof)
+        pass
+
 
 class PortCollection(base.ResourceCollection):
     """This class represents the collection of `Port` resources."""
