@@ -321,3 +321,13 @@ class ResourceCollection(Resource):
     def __iter__(self):
         for identity in self.members_identities:
             yield self.get_member(identity)
+
+    def find_by_field_value(self, name, value):
+        for element in self:
+            assigned_value = getattr(element, name, None)
+            if assigned_value == value:
+                return element
+
+        raise exceptions.InvalidInputError(
+            error='Component with field %s and value %s not '
+                  'found' % (name, value))
