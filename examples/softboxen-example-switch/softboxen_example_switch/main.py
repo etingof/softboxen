@@ -15,8 +15,18 @@ class BaseCommandProcessor(base.CommandProcessor):
     MODEL = 'switch'
     VERSION = '1'
 
+    def do_exit(self, command, *args, context=None):
+        raise exceptions.TerminalExitError()
 
-class PreLoginCommandProcessor(BaseCommandProcessor):
+
+class ReadInputCommandProcessor(base.CommandProcessor):
+    """Create CLI REPR loop for example switch."""
+    VENDOR = 'example'
+    MODEL = 'switch'
+    VERSION = '1'
+
+
+class PreLoginCommandProcessor(ReadInputCommandProcessor):
     """"""
     def on_unknown_command(self, command, *args, context=None):
         subprocessor = self._create_subprocessor(
@@ -27,7 +37,7 @@ class PreLoginCommandProcessor(BaseCommandProcessor):
         subprocessor.loop(context=context)
 
 
-class LoginCommandProcessor(BaseCommandProcessor):
+class LoginCommandProcessor(ReadInputCommandProcessor):
 
     def on_unknown_command(self, command, *args, context=None):
         username = context.pop('username')
@@ -55,10 +65,10 @@ class UserViewCommandProcessor(BaseCommandProcessor):
         subprocessor = self._create_subprocessor(
             EnableCommandProcessor, 'login', 'mainloop', 'enable')
 
-        subprocessor.loop(context=context)
+        subprocessor.loop(context=context, raise_on_exit=False)
 
 
-class EnableCommandProcessor(BaseCommandProcessor):
+class EnableCommandProcessor(ReadInputCommandProcessor):
 
     def on_unknown_command(self, command, *args, context=None):
         username = '<enable>'
@@ -82,13 +92,49 @@ class EnableCommandProcessor(BaseCommandProcessor):
 class AdminCommandProcessor(BaseCommandProcessor):
 
     def do_show(self, command, *args, context=None):
-        port_name = self._shift(args, 'interface', 'status', 'ethernet')
-        for port in self._model.ports:
-            if port.name == port_name:
-                text = self._render(
-                    'show_interfaces_status_ethernet',
-                    context=dict(context, port=port))
-                self._write(text)
-                return
+        port_name, = self._dissect(args, 'interface', 'status', 'ethernet', str)
 
-        raise exceptions.CommandSyntaxError(command=command)
+        try:
+            port = self._model.ports.find_by_field_value('name', port_name)
+
+        except exceptions.SoftboxenError:
+            raise exceptions.CommandSyntaxError(command=command)
+
+        text = self._render(
+                'show_interfaces_status_ethernet',
+                context=dict(context, port=port))
+
+        self._write(text)
+
+    def do_configure(self, command, *args, context=None):
+        subprocessor = self._create_subprocessor(
+            ConfigureCommandProcessor, 'login', 'mainloop',
+            'enable', 'admin', 'configure')
+
+        subprocessor.loop(context=context, raise_on_exit=False)
+
+
+class ConfigureCommandProcessor(BaseCommandProcessor):
+
+    def do_interface(self, command, *args, context=None):
+        port_name, = self._dissect(args, 'ethernet', str)
+
+        port = self._model.ports.find_by_field_value('name', port_name)
+
+        subprocessor = self._create_subprocessor(
+            ConfigureIfEthCommandProcessor, 'login', 'mainloop',
+            'enable', 'admin', 'configure', 'interface_ethernet')
+
+        subprocessor.loop(
+            context=dict(context, port=port), raise_on_exit=False)
+
+
+class ConfigureIfEthCommandProcessor(BaseCommandProcessor):
+
+    def do_switchport(self, command, *args, context=None):
+            vlan_name, = self._dissect(
+                args, 'allowed', 'vlan', 'add', str, 'tagged')
+
+            port = context.pop('port')
+
+            port.add_access_vlan(vlan_name)
