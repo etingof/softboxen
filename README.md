@@ -39,9 +39,12 @@ been mostly focused on CLI pieces. This is what is more or less done:
 * REST API server backed by a SQL DB to host simulatied network devices
 * Network transport endpoints (telnet, ssh etc.)to access simulated CLIs
 
+On top of that, existing simulation data model will need to be extended
+and refined as further development might prove.
+
 ## How to evaluate simulated example CLI
 
-The easiest way to play with example CLI (shipped along with main) distribution
+The easiest way to play with the example CLI (shipped along with main) distribution
 as the `softboxen-example-switch`) is to run `example` tox job:
 
     $ tox -e example
@@ -68,23 +71,24 @@ classes and Jinja2 templates.
 
 ### Command processor
 
-Each command processor implements handling of CLI commands at a single nesting
-level. If you need to implement nesting (e.g. enable->configure), more
+Each command processor implements handling of the CLI commands at a single
+nesting level. If you need to implement nesting (e.g. enable->configure), more
 daisy chained `CommandProcessors` will be needed.
 
-Individual commands take shape `do_` or `do_not_` prefixed methods. Methods are
-invoked in response to user-entered commands. When called, each method is
+Individual commands take shape of `do_` or `do_not_` prefixed methods. Methods
+are invoked in response to user-entered commands. When called, each method is
 passed the entire backend model as a Python object. The method can inspect
 and/or modify the model as desired.
 
-See [softboxen-network-switch](https://github.com/etingof/softboxen/blob/master/examples/softboxen-example-switch/softboxen_example_switch/main.py#L12)
-`CommandProcessor` classes for inspiration.
+See  softboxen-network-switch [CommandProcessor classes](https://github.com/etingof/softboxen/blob/master/examples/softboxen-example-switch/softboxen_example_switch/main.py#L12)
+for inspiration.
 
 ### Command output
 
 Jinja2 templates can be used to model CLI command responses. Some parts of the
-response can be pasted as-is, while some pieces can be substituted at runtime,
-perhaps from device model properties.
+response can be pasted as-is into the template file, while some pieces can be
+substituted at runtime from device model properties or `CommandProcessor`
+context.
 
 By default, Jinja2 templates are organized in a directory tree reflecting
 the nesting of the CLI commands. Individual templates residing in each
@@ -96,30 +100,30 @@ are invoked automatically:
 * `on_cycle.j2` - on each REPR cycle
 * `on_error.j2` - on command execution failure
 
-See [softboxen-example-switch](https://github.com/etingof/softboxen/tree/master/examples/softboxen-example-switch/softboxen_example_switch/templates/example/switch/1)
-templates for more information.
+See softboxen-example-switch [templates](https://github.com/etingof/softboxen/tree/master/examples/softboxen-example-switch/softboxen_example_switch/templates/example/switch/1)
+for more information.
 
 ### Simulation data
 
 All simulation data should be ultimately hosted and managed by the REST API
-server. While not implemented or for development purposes, simulation data can
-be placed into a tree of JSON files.
+server. While not implemented, and also to simplify development setup,
+simulation data can be placed into a tree of JSON files.
 
 A single, universal network device model is used for backing all flavors of
 simulated devices. When instantiated, each model is tied to a specific CLI
-frontend flavor (by means of `vendor`, `model` and `version` attributes) and
-represents a single specific network device identified by `uuid` attribute.
+frontend flavor (by means of `vendor`, `model` and `version` model attributes)
+and represents a single specific network device identified by `uuid` attribute.
 
 When CLI simulation tool is started, it should be given `uuid` to point to a
 specific instance of a model. Once a model is found, CLI tool will try
 to discover and load required CLI implementation by searching installed
 extension modules by `vendor`, `model` and `version` model attributes.
 
-Instantiating models and tying them up with specific CLI simulation models
-is thought to be done via admin interface of REST API.
+Instantiating models and tying them up to a specific network device type
+CLI simulation is thought to be done via admin interface of REST API.
 
-See [softboxen-example-switch](https://github.com/etingof/softboxen/tree/master/examples/models)
-models for more information.
+See softboxen-example-switch [models](https://github.com/etingof/softboxen/tree/master/examples/models)
+for more information.
 
 ## How to get softboxen
 
