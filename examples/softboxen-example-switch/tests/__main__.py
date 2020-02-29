@@ -7,8 +7,7 @@
 import unittest
 
 suite = unittest.TestLoader().loadTestsFromNames(
-    ['tests.integration.__main__.suite',
-     'tests.unit.__main__.suite']
+    ['tests.unit.__main__.suite']
 )
 
 
