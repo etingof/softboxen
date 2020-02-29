@@ -97,7 +97,7 @@ MAPPING = {
 
 
 class FullResource(base.Resource):
-    
+
     string = base.Field('String', required=True)
     integer = base.Field('Integer', converter=int)
     collection_field = TestCollectionField('CollectionField')

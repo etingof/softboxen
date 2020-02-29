@@ -8,7 +8,7 @@ import sys
 import unittest
 
 
-class BAseTestCase(unittest.TestCase):
+class BaseTestCase(unittest.TestCase):
     def setUp(self):
         pass
 

@@ -25,44 +25,62 @@ class SoftboxenError(Exception):
 
 
 class InvalidInputError(SoftboxenError):
+    """Raise on invalid input."""
+
     message = 'Invalid input: %(error)s'
 
 
 class NetworkError(SoftboxenError):
+    """Raise on network error."""
+
     message = 'Unable to connect to %(url)s. Error: %(error)s'
 
 
 class MissingAttributeError(SoftboxenError):
+    """Raise on missing resource attribute."""
+
     message = ('The attribute %(attribute)s is missing from the '
                'resource %(resource)s')
 
 
 class MalformedAttributeError(SoftboxenError):
+    """Raise on malformed resource attribute."""
+
     message = ('The attribute %(attribute)s is malformed in the '
                'resource %(resource)s: %(error)s')
 
 
 class InvalidParameterValueError(SoftboxenError):
+    """Raise on invalid parameter."""
+
     message = ('The parameter "%(parameter)s" value "%(value)s" is invalid. '
                'Valid values are: %(valid_values)s')
 
 
 class ExtensionNotFoundError(SoftboxenError):
+    """Raise if extension package is not found."""
+
     message = ('Cannot find CLI extension for %(vendor)s, %(model)s, '
                '%(version)s')
 
 
 class TerminalExitError(SoftboxenError):
+    """Raise on terminal connection closure."""
+
     message = 'Terminal connection closed'
 
 
 class TemplateError(SoftboxenError):
+    """Raise on template rendering error."""
+
     message = ('Jinja2 template error at command processor %(processor)s '
                'while processing state %(command)s, template root '
                '%(template_root)s: %(error)s')
 
 
 class CommandSyntaxError(SoftboxenError):
+    """Raise on CLI command syntax error."""
+
     message = 'Command syntax error: %(command)s'
 
     def __init__(self, **kwargs):
@@ -71,7 +89,7 @@ class CommandSyntaxError(SoftboxenError):
 
 
 class HTTPError(SoftboxenError):
-    """Basic exception for HTTP errors"""
+    """Raise on HTTP errors."""
 
     status_code = None
     """HTTP status code."""
@@ -107,19 +125,21 @@ class HTTPError(SoftboxenError):
 
 
 class BadRequestError(HTTPError):
-    pass
+    """Raise on bad HTTP request event."""
 
 
 class ResourceNotFoundError(HTTPError):
+    """Raise when HTTP resource has not been found."""
+
     message = 'Resource %(url)s not found'
 
 
 class ServerSideError(HTTPError):
-    pass
+    """Raise on server side error."""
 
 
 class AccessError(HTTPError):
-    pass
+    """Raise on HTTP access error."""
 
 
 def handle_error_response(method, url, response):

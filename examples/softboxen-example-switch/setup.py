@@ -57,8 +57,8 @@ params = {
             'softboxen_example_switch', '__init__.py')).read().split('\'')[1],
     'description': 'Example network switch for softboxen network equipment '
                    'simulator',
-    'long_description': 'Example network switch extension module for Softboxen '
-                        'network equipment simulation suite.',
+    'long_description': 'Example network switch extension module for '
+                        'Softboxen network equipment simulation suite.',
     'maintainer': 'Ilya Etingof <etingof@gmail.com>',
     'author': 'Ilya Etingof',
     'author_email': 'etingof@gmail.com',
@@ -68,7 +68,8 @@ params = {
     'license': 'BSD',
     'packages': setuptools.find_packages(),
     'entry_points': {
-        'softboxen.cli': 'example.switch.1 = softboxen_example_switch.main:PreLoginCommandProcessor'
+        'softboxen.cli': 'example.switch.1 = softboxen_example_switch'
+                         '.main:PreLoginCommandProcessor'
     },
     'cmdclass': {
         'test': PyTest,

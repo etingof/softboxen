@@ -11,6 +11,7 @@ from softboxen import exceptions
 
 class BaseCommandProcessor(base.CommandProcessor):
     """Create CLI REPR loop for example switch."""
+
     VENDOR = 'example'
     MODEL = 'switch'
     VERSION = '1'
@@ -21,13 +22,14 @@ class BaseCommandProcessor(base.CommandProcessor):
 
 class ReadInputCommandProcessor(base.CommandProcessor):
     """Create CLI REPR loop for example switch."""
+
     VENDOR = 'example'
     MODEL = 'switch'
     VERSION = '1'
 
 
 class PreLoginCommandProcessor(ReadInputCommandProcessor):
-    """"""
+
     def on_unknown_command(self, command, *args, context=None):
         subprocessor = self._create_subprocessor(
             LoginCommandProcessor, 'login')
@@ -92,17 +94,19 @@ class EnableCommandProcessor(ReadInputCommandProcessor):
 class AdminCommandProcessor(BaseCommandProcessor):
 
     def do_show(self, command, *args, context=None):
-        port_name, = self._dissect(args, 'interface', 'status', 'ethernet', str)
+        port_name, = self._dissect(
+            args, 'interface', 'status', 'ethernet', str)
 
         try:
-            port = self._model.ports.find_by_field_value('name', port_name)
+            port = self._model.ports.find_by_field_value(
+                'name', port_name)
 
         except exceptions.SoftboxenError:
             raise exceptions.CommandSyntaxError(command=command)
 
         text = self._render(
-                'show_interfaces_status_ethernet',
-                context=dict(context, port=port))
+            'show_interfaces_status_ethernet',
+            context=dict(context, port=port))
 
         self._write(text)
 
@@ -132,9 +136,9 @@ class ConfigureCommandProcessor(BaseCommandProcessor):
 class ConfigureIfEthCommandProcessor(BaseCommandProcessor):
 
     def do_switchport(self, command, *args, context=None):
-            vlan_name, = self._dissect(
-                args, 'allowed', 'vlan', 'add', str, 'tagged')
+        vlan_name, = self._dissect(
+            args, 'allowed', 'vlan', 'add', str, 'tagged')
 
-            port = context.pop('port')
+        port = context.pop('port')
 
-            port.add_access_vlan(vlan_name)
+        port.add_access_vlan(vlan_name)

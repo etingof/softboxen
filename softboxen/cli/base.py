@@ -7,9 +7,9 @@
 import logging
 import os
 
-from softboxen import exceptions
-
 import jinja2
+
+from softboxen import exceptions
 
 LOG = logging.getLogger(__name__)
 
@@ -19,6 +19,7 @@ class Context:
 
     The intension is to simplify context access in the templates.
     """
+
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 

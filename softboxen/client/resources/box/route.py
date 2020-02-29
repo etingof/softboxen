@@ -13,14 +13,15 @@ LOG = logging.getLogger(__name__)
 
 
 class Route(base.Resource):
-    """This class represents network routing entry resource."""
+    """Represent network routing entry resource."""
+
     dst = base.Field('dst')
     gw = base.Field('gw')
     metric = base.Field('metric')
 
 
 class RouteCollection(base.ResourceCollection):
-    """This class represents the collection of Route resources."""
+    """Represent a collection of network routes."""
 
     @property
     def _resource_type(self):

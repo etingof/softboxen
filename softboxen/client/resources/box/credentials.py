@@ -13,13 +13,15 @@ LOG = logging.getLogger(__name__)
 
 
 class Credentials(base.Resource):
+    """Represent user credentials."""
+
     protocol = base.Field('protocol')
     user = base.Field('user')
     password = base.Field('password')
 
 
 class CredentialsCollection(base.ResourceCollection):
-    """This class represents the collection of Storage resources"""
+    """Represent a collection of users credentials."""
 
     @property
     def _resource_type(self):

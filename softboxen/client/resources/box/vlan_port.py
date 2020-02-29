@@ -14,7 +14,8 @@ LOG = logging.getLogger(__name__)
 
 
 class VlanPort(base.Resource):
-    """This class represents VLAN port resource."""
+    """Represent VLAN port resource."""
+
     name = base.Field('name')
     description = base.Field('description')
     mode = base.Field('mode')
@@ -51,13 +52,13 @@ class VlanPort(base.Resource):
 
     @property
     def ports(self):
-        """A reference `VlanPortCollection`."""
+        """Return `VlanPortCollection` object."""
         return VlanPortCollection(
             self._conn, base.get_sub_resource_path_by(self, 'ports'))
 
 
 class VlanPortCollection(base.ResourceCollection):
-    """This class represents the collection of `VlanPort` resources."""
+    """Represent a collection of VLAN ports."""
 
     @property
     def _resource_type(self):

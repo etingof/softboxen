@@ -133,6 +133,7 @@ class EnumerationField(Field):
         fields result in MissingAttributeError.
     :param default: the default value to use when the field is missing.
     """
+
     def __init__(self, field, mapping, required=False, default=None):
         if not isinstance(mapping, dict):
             raise exceptions.InvalidInputError(
@@ -198,7 +199,7 @@ class Resource:
 
 
 def get_sub_resource_path_by(resource, subresource_name):
-    """Helper function to find the subresource path
+    """Find subresource path.
 
     :param resource: Resource instance on which the name
         gets queried upon.
@@ -289,6 +290,7 @@ class ResourceCollection(Resource):
     :param connection: A RestClient instance
     :param path: sub-URI path to the resource collection.
     """
+
     MEMBERS_ATTR = 'members'
 
     members_identities = Field(
@@ -319,6 +321,7 @@ class ResourceCollection(Resource):
         return self._resource_type(self._conn, identity)
 
     def __iter__(self):
+        """Iterate over collection members."""
         for identity in self.members_identities:
             yield self.get_member(identity)
 

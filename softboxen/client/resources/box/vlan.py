@@ -13,14 +13,15 @@ LOG = logging.getLogger(__name__)
 
 
 class Vlan(base.Resource):
-    """This class represents VLAN resource."""
+    """Represent a VLAN resource."""
+
     number = base.Field('number')
     name = base.Field('name')
     description = base.Field('description')
 
 
 class VlanCollection(base.ResourceCollection):
-    """This class represents the collection of `Vlan` resources."""
+    """Represent the collection of VLANs."""
 
     @property
     def _resource_type(self):

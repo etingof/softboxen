@@ -14,7 +14,8 @@ LOG = logging.getLogger(__name__)
 
 
 class Port(base.Resource):
-    """This class represents physical port resource."""
+    """Represent physical port resource."""
+
     name = base.Field('name')
     description = base.Field('description')
     mode = base.Field('mode')
@@ -46,32 +47,33 @@ class Port(base.Resource):
 
     @property
     def access_vlan(self):
-        """A reference `VlanPortCollection`."""
+        """Return `VlanPortCollection` object for access VLAN."""
         return vlan_port.VlanPort(
             self._conn, base.get_sub_resource_path_by(
                 self, 'access_vlan'))
 
     @property
     def trunk_vlans(self):
-        """A reference `VlanPortCollection`."""
+        """Return `VlanPortCollection` object for trunk VLAN."""
         return vlan_port.VlanPortCollection(
             self._conn, base.get_sub_resource_path_by(
                 self, 'trunk_vlans'))
 
     @property
     def trunk_native_vlan(self):
-        """A reference `VlanPortCollection`."""
+        """Return `VlanPortCollection` object for native VLAN."""
         return vlan_port.VlanPort(
             self._conn, base.get_sub_resource_path_by(
                 self, 'trunk_native_vlan'))
 
     def add_access_vlan(self, name):
+        """Add new VLAN to access VLAN collection."""
         # TODO(etingof)
         pass
 
 
 class PortCollection(base.ResourceCollection):
-    """This class represents the collection of `Port` resources."""
+    """Represent a collection of ports."""
 
     @property
     def _resource_type(self):

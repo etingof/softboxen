@@ -19,7 +19,10 @@ LOG = logging.getLogger(__name__)
 
 
 class LocalFileAdapter(adapters.BaseAdapter):
-    """Protocol Adapter to allow Requests to GET file:// URLs."""
+    """Allow Requests to GET file:// URLs.
+
+    Protocol Adapter to allow Requests to GET file:// URLs.
+    """
 
     @staticmethod
     def _verify_path(method, path):
@@ -43,19 +46,20 @@ class LocalFileAdapter(adapters.BaseAdapter):
             return 200, "OK"
 
     def send(self, req, **kwargs):  # pylint: disable=unused-argument
-        """Return the file specified by the given request
+        """Return the file specified by the given request.
 
         :param req: request object
         """
         path = os.path.normcase(os.path.normpath(url2pathname(req.path_url)))
         response = requests.Response()
 
-        response.status_code, response.reason = self._verify_path(req.method, path)
+        response.status_code, response.reason = self._verify_path(
+            req.method, path)
         if response.status_code == 200 and req.method.lower() != 'head':
             try:
                 response.raw = open(path, 'rb')
 
-            except (OSError, IOError) as err:
+            except OSError as err:
                 response.status_code = 500
                 response.reason = str(err)
 
@@ -89,6 +93,7 @@ class RestClient(object):
         file or directory with certificates of trusted CAs.
         Defaults to True.
     """
+
     def __init__(self, url, username=None, password=None, verify=True):
         self._url = url
         self._session = requests.Session()
@@ -226,7 +231,9 @@ class RestClient(object):
             **requests_options)
 
     def __enter__(self):
+        """Enter into context."""
         return self
 
     def __exit__(self, *_args):
+        """Leave context."""
         self.close()

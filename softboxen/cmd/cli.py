@@ -22,7 +22,7 @@ LOG = logging.getLogger(__name__)
 def main():
 
     parser = argparse.ArgumentParser(
-                description='SoftBoxen CLI Simulator')
+        description='SoftBoxen CLI Simulator')
 
     parser.add_argument(
         '-v', '--version', action='version',

@@ -16,7 +16,11 @@ LOG = logging.getLogger(__name__)
 
 
 def load_clis(namespace='softboxen.cli'):
+    """Return discovered softboxen CLI extension classes.
 
+    :param namespace: entry point prefix to search
+    :return: a sequence of discovered CLI implementation classes
+    """
     LOG.debug('searching namespace %s', namespace)
 
     extensions = {

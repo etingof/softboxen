@@ -19,6 +19,7 @@ class Root(base.Resource):
     :param connector: A RestClient instance
     :param path: sub-URI path to the resource.
     """
+
     description = base.Field('description')
     """Service description."""
 
@@ -28,12 +29,12 @@ class Root(base.Resource):
 
     @property
     def boxen(self):
-        """A reference `BoxCollection`."""
+        """Return a `BoxCollection` object."""
         return box.BoxCollection(
             self._conn, base.get_sub_resource_path_by(self, 'boxen'))
 
     def get_box(self, identity):
-        """Given the identity return a Box object
+        """Return `Box` object by identity.
 
         :param identity: The identity of the Box resource.
         :raises: `UnknownDefaultError` if default box can't be determined.
