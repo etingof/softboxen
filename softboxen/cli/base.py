@@ -55,7 +55,7 @@ class CommandProcessor:
         self._jenv = jinja2.Environment(
             loader=(jinja2.FileSystemLoader(self._template_dir)
                     if template_root else None),
-            trim_blocks=True, lstrip_blocks=True)
+            trim_blocks=True, lstrip_blocks=True, autoescape=True)
 
     def _render(self, command, *args, context=None):
         template_name = '%s.j2' % command
