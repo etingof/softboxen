@@ -141,4 +141,4 @@ class ConfigureIfEthCommandProcessor(BaseCommandProcessor):
 
         port = context.pop('port')
 
-        port.add_access_vlan(vlan_name)
+        port.add_access_vlan(name=vlan_name)

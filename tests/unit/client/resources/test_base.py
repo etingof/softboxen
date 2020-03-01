@@ -24,9 +24,32 @@ class ResourceTestCase(unittest.TestCase):
             connection=self.conn, path='//softboxen')
         self.conn.reset_mock()
 
-    def test_refresh(self):
+    def test_load(self):
         self.base_resource.load()
         self.conn.get.assert_called_once_with(path='//softboxen')
+
+    def test_create_no_redir(self):
+        base.Resource.create(
+            connection=self.conn, path='//softboxen', field='value')
+        self.conn.post.assert_called_once_with(
+            path='//softboxen',
+            allow_redirects=False,
+            data={'field': 'value'})
+
+    def test_create_redir(self):
+        mock_rsp = self.conn.post.return_value
+        mock_rsp.status_code = 302
+        mock_rsp.geturl.return_value = '//softboxen/1'
+
+        base.Resource.create(
+            connection=self.conn, path='//softboxen', filed='value')
+
+        self.conn.post.assert_called_once_with(
+            path='//softboxen',
+            allow_redirects=False,
+            data={'filed': 'value'})
+
+        self.conn.get.assert_called_once_with(path='//softboxen/1')
 
 
 class TestResource(base.Resource):

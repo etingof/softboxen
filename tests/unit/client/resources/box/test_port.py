@@ -82,6 +82,27 @@ class PortTestCase(unittest.TestCase):
 
         self.conn.get.return_value.json.assert_called_once_with()
 
+    @mock.patch.object(vlan_port, 'VlanPort', autospec=True)
+    def test_add_access_vlan(self, mock_vlan_port):
+        self.port.add_access_vlan(field='value')
+        mock_vlan_port.create.assert_called_once_with(
+            self.conn, '/softboxen/v1/boxen/1/ports/1/access_vlan',
+            field='value')
+
+    @mock.patch.object(vlan_port, 'VlanPort', autospec=True)
+    def test_add_trunk_vlan(self, mock_vlan_port):
+        self.port.add_trunk_vlan(field='value')
+        mock_vlan_port.create.assert_called_once_with(
+            self.conn, '/softboxen/v1/boxen/1/ports/1/trunk_vlans',
+            field='value')
+
+    @mock.patch.object(vlan_port, 'VlanPort', autospec=True)
+    def test_add_trunk_native_vlan(self, mock_vlan_port):
+        self.port.add_trunk_native_vlan(field='value')
+        mock_vlan_port.create.assert_called_once_with(
+            self.conn, '/softboxen/v1/boxen/1/ports/1/trunk_native_vlan',
+            field='value')
+
 
 class PortCollectionTestCase(unittest.TestCase):
 

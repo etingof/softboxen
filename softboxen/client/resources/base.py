@@ -164,6 +164,33 @@ class Resource:
 
         self.load()
 
+    @classmethod
+    def create(cls, connection, path='', **fields):
+        """Create new resource.
+
+        Performs a REST API call to creates a resource with some initial
+        values. In response, REST API can return a redirect to the newly
+        created resource. In that case, this method will load and return
+        the new resource.
+
+        :param connection: A RestClient instance
+        :param path: Path to create the resource (via POST).
+        :param fields: required and optional name-value pairs for
+            resource fields
+
+        :return: new resource object or `None`
+        """
+        rsp = connection.post(path=path, data=fields, allow_redirects=False)
+
+        LOG.info(
+            'Resource has been created by path %s, status code %s, '
+            'new object redirect %s', path, rsp.status_code, rsp.geturl())
+
+        if rsp.status_code == 302:
+            url = rsp.geturl()
+            if url:
+                return cls(connection, url)
+
     def _parse_attributes(self, json_doc):
         """Parse the attributes of a resource.
 
