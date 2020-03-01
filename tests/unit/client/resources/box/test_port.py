@@ -54,6 +54,34 @@ class PortTestCase(unittest.TestCase):
 
         self.conn.get.return_value.json.assert_called_once_with()
 
+    def test_trunk_vlans(self):
+        self.conn.get.return_value.json.reset_mock()
+
+        with open('tests/unit/client/resources/samples/'
+                  'vlan_port_collection.json') as f:
+            self.conn.get.return_value.json.return_value = json.load(f)
+
+        expected = self.port.trunk_vlans
+
+        self.assertIsInstance(
+            expected, vlan_port.VlanPortCollection)
+
+        self.conn.get.return_value.json.assert_called_once_with()
+
+    def test_trunk_native_vlan(self):
+        self.conn.get.return_value.json.reset_mock()
+
+        with open('tests/unit/client/resources/samples/'
+                  'vlan_port.json') as f:
+            self.conn.get.return_value.json.return_value = json.load(f)
+
+        expected = self.port.trunk_native_vlan
+
+        self.assertIsInstance(
+            expected, vlan_port.VlanPort)
+
+        self.conn.get.return_value.json.assert_called_once_with()
+
 
 class PortCollectionTestCase(unittest.TestCase):
 
