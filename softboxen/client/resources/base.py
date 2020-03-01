@@ -168,7 +168,7 @@ class Resource:
     def create(cls, connection, path='', **fields):
         """Create new resource.
 
-        Performs a REST API call to creates a resource with some initial
+        Performs a REST API call to create a resource with some initial
         values. In response, REST API can return a redirect to the newly
         created resource. In that case, this method will load and return
         the new resource.
@@ -190,6 +190,15 @@ class Resource:
             url = rsp.geturl()
             if url:
                 return cls(connection, url)
+
+    def delete(self):
+        """Delete existing resource.
+
+        Performs a REST API call to delete this resource.
+        """
+        self._conn.delete(path=self._path)
+
+        LOG.info('Resource %s has been deleted', self)
 
     def _parse_attributes(self, json_doc):
         """Parse the attributes of a resource.

@@ -51,6 +51,10 @@ class ResourceTestCase(unittest.TestCase):
 
         self.conn.get.assert_called_once_with(path='//softboxen/1')
 
+    def test_delete(self):
+        self.base_resource.delete()
+        self.conn.delete.assert_called_once_with(path='//softboxen')
+
 
 class TestResource(base.Resource):
 
