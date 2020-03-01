@@ -9,8 +9,8 @@ import logging
 
 import pkg_resources
 
-from softboxen.cli import base
 from softboxen import exceptions
+from softboxen.cli import base
 
 LOG = logging.getLogger(__name__)
 

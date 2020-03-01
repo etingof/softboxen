@@ -5,9 +5,8 @@
 # License: https://github.com/etingof/softboxen/LICENSE.rst
 #
 
-from http import client as http_client
 import logging
-
+from http import client as http_client
 
 LOG = logging.getLogger(__name__)
 

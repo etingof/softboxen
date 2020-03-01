@@ -11,10 +11,10 @@ import sys
 from urllib.parse import urlparse
 
 from softboxen import __version__
+from softboxen import exceptions
 from softboxen.cli import factory
 from softboxen.client import rest_client
 from softboxen.client.resources import root
-from softboxen import exceptions
 
 LOG = logging.getLogger(__name__)
 
