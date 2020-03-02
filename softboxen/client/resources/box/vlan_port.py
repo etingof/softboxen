@@ -16,7 +16,7 @@ LOG = logging.getLogger(__name__)
 class VlanPort(base.Resource):
     """Represent VLAN port resource."""
 
-    vlan_id = base.Field('vlan_id')
+    vlan_num = base.Field('vlan_num')
     name = base.Field('name')
     description = base.Field('description')
     shutdown = base.Field('shutdown')

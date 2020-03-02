@@ -87,6 +87,12 @@ class CommandSyntaxError(SoftboxenError):
         self.command = kwargs.get('command')
 
 
+class RestApiError(SoftboxenError):
+    """Raise on REST API error."""
+
+    message = 'REST API error: %(error)s'
+
+
 class HTTPError(SoftboxenError):
     """Raise on HTTP errors."""
 

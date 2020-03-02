@@ -1,5 +1,5 @@
 {
-  "vlan_id": 10,
+  "vlan_num": 10,
   "name": "VLAN port",
   "description": "VLAN #1 access port",
   "port": {
