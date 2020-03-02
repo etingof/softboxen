@@ -17,24 +17,10 @@
       "self": "/softboxen/v1/vlans/3"
     }
   },
-  "trunk_encapsulation_mode": null,
   "shutdown": false,
-  "vrf": null,
   "speed": "10g",
   "auto_negotiation": true,
-  "aggregation_membership": null,
   "mtu": 1450,
-  "ip_helpers": [],
-  "secondary_ips": [],
-  "ips": [],
-  "lldp_transmit": null,
-  "lldp_receive": null,
-  "lldp_med": null,
-  "lldp_med_transmit_capabilities": null,
-  "lldp_med_transmit_network_policy": null,
-  "spanning_tree": null,
-  "spanning_tree_portfast": null,
-  "ntp": false,
   "_links": {
     "self": "/softboxen/v1/boxen/1/ports/1",
     "collection": "/softboxen/v1/boxen/1/ports"

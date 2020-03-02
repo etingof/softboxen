@@ -34,8 +34,6 @@ class VlanPortTestCase(unittest.TestCase):
 
         self.assertEqual('VLAN port', self.vlan_port.name)
         self.assertEqual('VLAN #1 access port', self.vlan_port.description)
-        self.assertEqual('access', self.vlan_port.mode)
-        self.assertEqual('10g', self.vlan_port.speed)
         self.assertEqual('/softboxen/v1/boxen/1/ports/1/vlans/1',
                          self.vlan_port.path)
         self.assertIsInstance(self.vlan_port.port, port.Port)
