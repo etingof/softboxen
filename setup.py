@@ -69,7 +69,8 @@ params = {
     'packages': setuptools.find_packages(),
     'entry_points': {
         'console_scripts': [
-            'softboxen-cli = softboxen.cmd.cli:main'
+            'softboxen-cli = softboxen.cmd.cli:main',
+            'softboxen-restapi = softboxen.cmd.api:main',
         ]
     },
     'cmdclass': {

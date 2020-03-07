@@ -1,0 +1,988 @@
+openapi: 3.0.0
+info:
+  license:
+    name: BSD License
+  version: '1.0.0'
+  title: 'CLI Simulator REST API'
+  description: >
+
+servers:
+  - url: http://127.0.0.1:5000/softboxen/v1
+  - url: https://virtserver.swaggerhub.com/etingof/softboxen/1.0.0
+
+paths:
+  /boxen:
+    get:
+      description: >
+        This resource represents a list of all existing simulated
+        network devices.
+      summary: >
+        List all existing simulated network devices
+      parameters:
+        - name: vendor
+          in: query
+          description: >
+            Search boxen by vendor name
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          description: >
+            Search boxen by model name
+          required: false
+          schema:
+            type: string
+        - name: version
+          in: query
+          description: >
+            Search boxen by version
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: >
+            An array of boxen
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boxen"
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create a new simulated network device
+      requestBody:
+        description: >
+          Receive a new network device of specified type
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoxRequired"
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}:
+    description: >
+      Represents a single simulated network device identified by `id`.
+    get:
+      summary: Get info for a specific simulated network device.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: >
+            The ID of the simulated network device information
+            to retrieve
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Box"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete simulated network device.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device to delete.
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}/credentials:
+    description: >
+      This resource represents user credentials at the
+      simulated network device.
+    get:
+      summary: >
+        List all existing credentials
+      parameters:
+        - name: protocol
+          in: query
+          description: >
+            Search credential by authentication protocol type.
+          required: false
+          schema:
+            type: string
+            enum: ["password"]
+        - name: user
+          in: query
+          description: >
+            Search credential by user name
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: >
+            An array of user credentials.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Credentials"
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create new user credentials.
+      requestBody:
+        description: >
+          New user credentials object.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CredentialRequired"
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}/credentials/{credential_id}:
+    description: >
+      This resource represents a single user credential information,
+      identified by `id`, as a simulated network device identified
+      by `box_id`.
+    get:
+      summary: Info for a specific credential entry.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: credential_id
+          in: path
+          required: true
+          description: The ID of the authentication information record.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Credential"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete user credential record.
+      parameters:
+        - name: box_id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: The ID of the authentication information record.
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}/ports:
+    description: >
+      This resource represents network ports at the simulated network device.
+    get:
+      summary: >
+        List all existing ports
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: name
+          in: query
+          description: >
+            Search port by name.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: >
+            An array of network ports.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ports"
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create new network port.
+      requestBody:
+        description: >
+          New network port object.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortRequired"
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}/ports/{port_id}:
+    description: >
+      This resource represents a single network port information,
+      identified by `id`, as a simulated network device identified
+      by `box_id`.
+    get:
+      summary: Info for a specific port entry.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: port_id
+          in: path
+          required: true
+          description: The ID of the network port.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Port"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete network port.
+      parameters:
+        - name: box_id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: The ID of the network port.
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}/ports/{port_id}/vlan_ports:
+    description: >
+      This resource represents VLAN ports at the network port of the
+      simulated network device.
+    get:
+      summary: >
+        List all existing VLAN ports
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: port_id
+          in: path
+          required: true
+          description: The ID of the network port.
+          schema:
+            type: integer
+        - name: name
+          in: query
+          description: >
+            Search VLAN port by name.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: >
+            An array of VLAN ports.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VlanPorts"
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create new VLAN port.
+      requestBody:
+        description: >
+          New network VLAN port object.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VlanPortRequired"
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}/ports/{port_id}/vlan_ports/{vlan_port_id}:
+    description: >
+      This resource represents a single VLAN port object, identified by
+      `id` at the network port identified by `port_id` as the simulated
+      network device identified by `box_id`.
+    get:
+      summary: Get VLAN port information.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: port_id
+          in: path
+          required: true
+          description: The ID of the physical port at the simulated
+            network device.
+          schema:
+            type: integer
+        - name: vlan_port_id
+          in: path
+          required: true
+          description: The ID of the VLAN port.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VlanPort"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete VLAN port.
+      parameters:
+        - name: box_id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: port_id
+          in: path
+          required: true
+          description: The ID of the physical port at the simulated
+            network device.
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: The ID of the VLAN port.
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}/routes:
+    description: >
+      This resource represents network routes at the simulated network device.
+    get:
+      summary: >
+        List all existing routes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: >
+            The ID of the simulated network device information
+            to retrieve
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: >
+            An array of network routes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Routes"
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create new network route.
+      requestBody:
+        description: >
+          New network route object.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RouteRequired"
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /boxen/{id}/routes/{route_id}:
+    description: >
+      This resource represents a single network route information,
+      identified by `id`, as a simulated network device identified
+      by `box_id`.
+    get:
+      summary: Info for a specific route entry.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: route_id
+          in: path
+          required: true
+          description: The ID of the network route.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Route"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete network route.
+      parameters:
+        - name: box_id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: The ID of the network route.
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Null response
+        default:
+          description: Unspecified error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    BoxRequired:
+      description: >
+        Required fields of simulated network device object.
+      type: object
+      required:
+        - vendor
+        - model
+        - version
+      properties:
+        vendor:
+          type: string
+        model:
+          type: string
+        version:
+          type: string
+
+    BoxOptional:
+      description: >
+        Optional fields of simulated network device object.
+      type: object
+      properties:
+        id:
+          description: >
+            Simulated network device unique ID.
+          type: integer
+          format: int64
+        uuid:
+          description: >
+            Simulated network device UUID.
+          type: string
+        description:
+          description: >
+            Descriptive name of this network device.
+          type: string
+        hostname:
+          description: >
+            Hostname assigned to this simulated network device.
+          type: string
+        mgmt_address:
+          description: >
+            Management network address to access this simulated network device.
+          type: string
+        credentials:
+          description: >
+            List of links to user access credentials.
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              _links:
+                $ref: "#/components/schemas/Links"
+        ports:
+          description: >
+            List of links to network ports that this network device has.
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              _links:
+                $ref: "#/components/schemas/Links"
+        routes:
+          description: >
+            List of links to network routes that this network device has.
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              _links:
+                $ref: "#/components/schemas/Links"
+
+    Box:
+      description: >
+        Simulated network device object.
+      allOf:
+        - $ref: "#/components/schemas/BoxRequired"
+        - $ref: "#/components/schemas/BoxOptional"
+
+    Boxen:
+      description: >
+        Collection of simulated network devices.
+      type: array
+      items:
+        $ref: "#/components/schemas/Box"
+
+    CredentialRequired:
+      description: >
+        Required fields of user credentials object.
+      type: object
+      required:
+        - password
+      properties:
+        password:
+          description: >
+            User password.
+          type: string
+
+    CredentialOptional:
+      description: >
+        Optional fields of user credentials object.
+      type: object
+      properties:
+        id:
+          description: >
+            Unique ID
+          type: integer
+          format: int64
+        protocol:
+          description: >
+            User authentication protocol to use.
+          type: string
+          enum: ['password']
+        user:
+          description: >
+            User name.
+          type: string
+        box:
+          type: object
+          description: >
+            Reference to simulated network device object.
+          properties:
+            name:
+              type: string
+            _links:
+              $ref: "#/components/schemas/Links"
+
+    Credential:
+      description: >
+        Fields of user credentials object.
+      allOf:
+        - $ref: "#/components/schemas/CredentialRequired"
+        - $ref: "#/components/schemas/CredentialOptional"
+
+    Credentials:
+      description: >
+        Collection of user credentials.
+      type: array
+      items:
+        $ref: "#/components/schemas/Credential"
+
+    PortRequired:
+      description: >
+        Required fields of network ports object.
+      type: object
+      properties:
+
+    PortOptional:
+      description: >
+        Optional fields of network ports object.
+      type: object
+      properties:
+        id:
+          description: >
+            Unique ID
+          type: integer
+          format: int64
+        name:
+          description: >
+            Port name.
+          type: string
+        description:
+          description: >
+            Port description.
+          type: string
+        shutdown:
+          description: >
+            Port is shut down.
+          type: boolean
+        speed:
+          description: >
+            Port maximum bit rate.
+          type: string
+          enum: ['10M', '1G', '10G']
+        auto_negotiation:
+          description: >
+            Port auto negotiation enabled.
+          type: boolean
+        mtu:
+          description: >
+            Port MTU.
+          type: integer
+        access_vlan:
+          type: object
+          description: >
+            Reference access VLAN port on top of this port.
+          properties:
+            name:
+              type: string
+            _links:
+              $ref: "#/components/schemas/Links"
+        trunk_vlans:
+          type: object
+          description: >
+            Reference trunk VLAN ports on top of this port.
+          properties:
+            name:
+              type: string
+            _links:
+              $ref: "#/components/schemas/Links"
+        trunk_native_vlan:
+          type: object
+          description: >
+            Reference trunk native VLAN port on top of this port.
+          properties:
+            name:
+              type: string
+            _links:
+              $ref: "#/components/schemas/Links"
+        box:
+          type: object
+          description: >
+            Reference to simulated network device object.
+          properties:
+            name:
+              type: string
+            _links:
+              $ref: "#/components/schemas/Links"
+
+    Port:
+      description: >
+        Ports object.
+      allOf:
+        - $ref: "#/components/schemas/PortRequired"
+        - $ref: "#/components/schemas/PortOptional"
+
+    Ports:
+      description: >
+        Collection of port objects.
+      type: array
+      items:
+        $ref: "#/components/schemas/Port"
+
+    VlanPortRequired:
+      description: >
+        Required fields of VLAN port object.
+      type: object
+      properties:
+        vlan_num:
+          description: >
+            VLAN ID of this port.
+          type: integer
+
+    VlanPortOptional:
+      description: >
+        Optional fields of VLAN port object.
+      type: object
+      properties:
+        id:
+          description: >
+            Unique ID
+          type: integer
+          format: int64
+        name:
+          description: >
+            VLAN port name.
+          type: string
+        description:
+          description: >
+            VLAN port description.
+          type: string
+        shutdown:
+          description: >
+            VLAN port is shut down.
+          type: boolean
+        mtu:
+          description: >
+            VLAN port MTU.
+          type: integer
+        access_group_in:
+          description: >
+            VLAN port access group inbound.
+          type: string
+        access_group_out:
+          description: >
+            VLAN port access group outbound.
+          type: string
+        ip_redirect:
+          description: >
+            VLAN port traffic redirect enabled.
+          type: boolean
+        ip_proxy_arp:
+          description: >
+            IP proxy ARP enabled on this VLAN port.
+          type: boolean
+        unicast_reverse_path_forwarding:
+          description: >
+            Unicast reverse path forwarding enabled on this VLAN port.
+          type: boolean
+        load_interval:
+          description: >
+            Load interval on this VLAN port.
+          type: integer
+        mpls_ip:
+          description: >
+            MPLS IP of this VLAN port.
+          type: string
+        port:
+          type: object
+          description: >
+            Reference to simulated network port on top of which this VLAN port
+            is created.
+          properties:
+            name:
+              type: string
+            _links:
+              $ref: "#/components/schemas/Links"
+
+    VlanPort:
+      description: >
+        VLAN port object.
+      allOf:
+        - $ref: "#/components/schemas/VlanPortRequired"
+        - $ref: "#/components/schemas/VlanPortOptional"
+
+    VlanPorts:
+      description: >
+        Collection of VLAN port objects.
+      type: array
+      items:
+        $ref: "#/components/schemas/VlanPort"
+
+    RouteRequired:
+      description: >
+        Required fields of network route object.
+      type: object
+      properties:
+        dst:
+          description: >
+            Route destination.
+          type: string
+        gw:
+          description: >
+            Network gateway.
+          type: string
+
+    RouteOptional:
+      description: >
+        Optional fields of network route object.
+      type: object
+      properties:
+        id:
+          description: >
+            Unique ID
+          type: integer
+          format: int64
+        metric:
+          description: >
+            Route metric.
+          type: integer
+        box:
+          type: object
+          description: >
+            Reference to simulated network device object.
+          properties:
+            name:
+              type: string
+            _links:
+              $ref: "#/components/schemas/Links"
+
+    Route:
+      description: >
+        Routes object.
+      allOf:
+        - $ref: "#/components/schemas/RouteRequired"
+        - $ref: "#/components/schemas/RouteOptional"
+
+    Routes:
+      description: >
+        Collection of route objects.
+      type: array
+      items:
+        $ref: "#/components/schemas/Route"
+
+    Links:
+      type: object
+      properties:
+        self:
+          description: >
+            URI pointing to the instance of one object in a collection
+          type: string
+        collection:
+          description: >
+            URI pointing to the entire collection of similar objects
+          type: string
+
+    Error:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string

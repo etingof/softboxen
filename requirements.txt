@@ -1,2 +1,7 @@
-requests
+Flask-SQLAlchemy
+Flask<=1.1.1
+flask-marshmallow
 jinja2
+marshmallow
+marshmallow-sqlalchemy
+requests
