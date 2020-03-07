@@ -12,7 +12,7 @@ from softboxen.api import models
 class BoxSchema(ma.ModelSchema):
     class Meta:
         model = models.Box
-        fields = ('vendor', 'model', 'version', 'uuid', 'description',
+        fields = ('id', 'vendor', 'model', 'version', 'uuid', 'description',
                   'hostname', 'mgmt_address', 'credentials',
                   'ports', 'routes', '_links')
 
@@ -56,7 +56,7 @@ class BoxSchema(ma.ModelSchema):
 class CredentialSchema(ma.ModelSchema):
     class Meta:
         model = models.Credential
-        fields = ('protocol', 'credential', 'user', 'password',
+        fields = ('id', 'protocol', 'credential', 'user', 'password',
                   'box', '_links')
 
     class BoxSchema(ma.ModelSchema):
@@ -78,7 +78,7 @@ class CredentialSchema(ma.ModelSchema):
 class PortSchema(ma.ModelSchema):
     class Meta:
         model = models.Port
-        fields = ('name', 'description', 'shutdown', 'speed',
+        fields = ('id', 'name', 'description', 'shutdown', 'speed',
                   'auto_negotiation', 'mtu', 'access_vlan',
                   'trunk_vlans', 'trunk_native_vlan',
                   'box', '_links')
@@ -117,7 +117,7 @@ class PortSchema(ma.ModelSchema):
 class VlanPortSchema(ma.ModelSchema):
     class Meta:
         model = models.VlanPort
-        fields = ('vlan_num', 'name', 'description', 'shutdown', 'mtu',
+        fields = ('id', 'vlan_num', 'name', 'description', 'shutdown', 'mtu',
                   'access_group_in', 'access_group_out', 'ip_redirect',
                   'ip_proxy_arp', 'unicast_reverse_path_forwarding',
                   'load_interval', 'mpls_ip', 'access_on_port',
@@ -158,7 +158,7 @@ class VlanPortSchema(ma.ModelSchema):
 class RouteSchema(ma.ModelSchema):
     class Meta:
         model = models.Credential
-        fields = ('dst', 'gw', 'metric', 'box', '_links')
+        fields = ('id', 'dst', 'gw', 'metric', 'box', '_links')
 
     class BoxSchema(ma.ModelSchema):
         class Meta:
