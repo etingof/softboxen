@@ -34,6 +34,7 @@ script:
       cd ./docs && make html && cd -
     fi
   - PYTHONPATH=.:$PYTHONPATH python tests/__main__.py
+  - tests/integration/restapi.sh
 after_success:
   - PYTHONPATH=.:$PYTHONPATH coverage run --omit=*test* tests/__main__.py
   - codecov

@@ -47,7 +47,7 @@ and refined as further development might prove.
 The easiest way to play with the example CLI (shipped along with main) distribution
 as the `softboxen-example-switch`) is to run `example` tox job:
 
-    $ tox -e example
+    $ tox -e example-cli
     
      / ____|      / _| | | |
     | (___   ___ | |_| |_| |__   _____  _____ _ __
