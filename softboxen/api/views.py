@@ -61,18 +61,18 @@ def search_model(model, query):
 
 @app.route(PREFIX + '/')
 def show_root():
-    return {
+    response = {
         'description': 'Softboxen CLI simulation REST API '
-                       '(http://snmplabs.com/softboxen)',
+        '(http://snmplabs.com/softboxen)',
         'boxen': {
             '_links': {
                 'self': flask.url_for('show_boxen')
             }
-        },
-        '_links': {
-            'self': flask.url_for('show_root')
         }
     }
+
+    schema = schemas.RootSchema()
+    return schema.jsonify(response), 200
 
 
 @app.route(PREFIX + '/boxen')
@@ -83,8 +83,14 @@ def show_boxen():
 
     boxen_query = search_model(models.Box, boxen_query)
 
-    schema = schemas.BoxSchema(many=True)
-    return schema.jsonify(boxen_query.all())
+    boxen = boxen_query.all()
+    response = {
+        'members': boxen,
+        'count': len(boxen)
+    }
+
+    schema = schemas.BoxenSchema()
+    return schema.jsonify(response), 200
 
 
 @app.route(PREFIX + '/boxen/<id>', methods=['GET'])
@@ -141,8 +147,15 @@ def show_credentials(box_id):
 
     credentials_query = search_model(models.Credential, credentials_query)
 
-    schema = schemas.CredentialSchema(many=True)
-    return schema.jsonify(credentials_query.all()), 200
+    schema = schemas.CredentialsSchema()
+    credentials = credentials_query.all()
+    response = {
+        'members': credentials,
+        'count': len(credentials),
+        'box_id': box_id
+    }
+
+    return schema.jsonify(response), 200
 
 
 @app.route(PREFIX + '/boxen/<box_id>/credentials/<id>', methods=['GET'])
@@ -199,8 +212,15 @@ def show_ports(box_id):
 
     ports_query = search_model(models.Port, ports_query)
 
-    schema = schemas.PortSchema(many=True)
-    return schema.jsonify(ports_query.all()), 200
+    ports = ports_query.all()
+    response = {
+        'members': ports,
+        'count': len(ports),
+        'box_id': box_id
+    }
+
+    schema = schemas.PortsSchema()
+    return schema.jsonify(response), 200
 
 
 @app.route(PREFIX + '/boxen/<box_id>/ports/<id>', methods=['GET'])
@@ -257,8 +277,16 @@ def show_vlan_ports(box_id, port_id):
 
     vlan_ports_query = search_model(models.VlanPort, vlan_ports_query)
 
-    schema = schemas.VlanPortSchema(many=True)
-    return schema.jsonify(vlan_ports_query.all()), 200
+    vlan_ports = vlan_ports_query.all()
+    response = {
+        'members': vlan_ports,
+        'count': len(vlan_ports),
+        'box_id': box_id,
+        'port_id': port_id
+    }
+
+    schema = schemas.VlanPortsSchema()
+    return schema.jsonify(response), 200
 
 
 @app.route(
@@ -322,8 +350,15 @@ def show_routes(box_id):
 
     routes_query = search_model(models.Route, routes_query)
 
-    schema = schemas.RouteSchema(many=True)
-    return schema.jsonify(routes_query.all()), 200
+    routes = routes_query.all()
+    response = {
+        'members': routes,
+        'count': len(routes),
+        'box_id': box_id
+    }
+
+    schema = schemas.RoutesSchema()
+    return schema.jsonify(response), 200
 
 
 @app.route(PREFIX + '/boxen/<box_id>/routes/<id>', methods=['GET'])
