@@ -7,7 +7,7 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/etingof/softboxen.svg)](https://codecov.io/github/etingof/softboxen)
 [![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/etingof/softboxen/master/LICENSE.rst)
 
-*This project is being in active development. Not ready for use yet!*
+*This project is being in active development. Not quite usable yet, but worth evaluating!*
 
 The goal of `softboxen` project is to simulate the presence of a large number
 of network devices (such as switches, routers, modems etc) on the network.
@@ -36,7 +36,7 @@ been mostly focused on CLI pieces. This is what is more or less done:
 
 ## What's not done yet:
 
-* REST API server backed by a SQL DB to host simulatied network devices
+* A more realistic CLI implementation to see what's missing in the framework
 * Network transport endpoints (telnet, ssh etc.)to access simulated CLIs
 
 On top of that, existing simulation data model will need to be extended
@@ -63,6 +63,10 @@ as the `softboxen-example-switch`) is to run `example` tox job:
     Last login on 01.03.2020
 
 Interactive menus will guide you through the implemented commands.
+
+Alternatively, one could fire up `softboxen-restapi` server (that hosts
+simulated network device models) and point `softboxen-cli` CLI frontend
+to it.
 
 ## How to simulate a new box
 
