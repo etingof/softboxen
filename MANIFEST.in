@@ -1,6 +1,7 @@
 include *.rst *.md *.txt
 recursive-include tests *.py *.conf
-recursive-include docs *.py *.rst *.png *.svg *.inc
+recursive-include docs *.py *.rst *.png *.svg *.inc *.yml
 recursive-include examples *.py *.conf *ini *rst *md *.json
+recursive-include conf *.conf *ini *rst *.sh *.json *.service
 prune docs/build
 prune docs/source/.templates
