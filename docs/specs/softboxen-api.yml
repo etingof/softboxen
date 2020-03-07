@@ -103,7 +103,6 @@ paths:
           required: true
           description: >
             The ID of the simulated network device information
-            to retrieve
           schema:
             type: integer
       responses:
@@ -146,6 +145,13 @@ paths:
       summary: >
         List all existing credentials
       parameters:
+        - name: id
+          in: path
+          required: true
+          description: >
+            The ID of the simulated network device
+          schema:
+            type: integer
         - name: protocol
           in: query
           description: >
@@ -177,6 +183,14 @@ paths:
                 $ref: "#/components/schemas/Error"
     post:
       summary: Create new user credentials.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: >
+            The ID of the simulated network device
+          schema:
+            type: integer
       requestBody:
         description: >
           New user credentials object.
@@ -230,13 +244,13 @@ paths:
     delete:
       summary: Delete user credential record.
       parameters:
-        - name: box_id
+        - name: id
           in: path
           required: true
           description: The ID of the simulated network device.
           schema:
             type: integer
-        - name: id
+        - name: credential_id
           in: path
           required: true
           description: The ID of the authentication information record.
@@ -288,6 +302,13 @@ paths:
                 $ref: "#/components/schemas/Error"
     post:
       summary: Create new network port.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
       requestBody:
         description: >
           New network port object.
@@ -341,13 +362,13 @@ paths:
     delete:
       summary: Delete network port.
       parameters:
-        - name: box_id
+        - name: id
           in: path
           required: true
           description: The ID of the simulated network device.
           schema:
             type: integer
-        - name: id
+        - name: port_id
           in: path
           required: true
           description: The ID of the network port.
@@ -413,6 +434,26 @@ paths:
                 $ref: "#/components/schemas/Error"
     post:
       summary: Create new VLAN port.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the simulated network device.
+          schema:
+            type: integer
+        - name: port_id
+          in: path
+          required: true
+          description: The ID of the network port.
+          schema:
+            type: integer
+        - name: role
+          in: path
+          required: true
+          description: Role of this VLAN port
+          schema:
+            type: string
+            enum: ['access', 'trunk', 'native']
       requestBody:
         description: >
           New network VLAN port object.
@@ -479,8 +520,7 @@ paths:
                 $ref: "#/components/schemas/Error"
     delete:
       summary: Delete VLAN port.
-      parameters:
-        - name: box_id
+        - name: id
           in: path
           required: true
           description: The ID of the simulated network device.
@@ -493,7 +533,14 @@ paths:
             network device.
           schema:
             type: integer
-        - name: id
+        - name: role
+          in: path
+          required: true
+          description: Role of this VLAN port
+          schema:
+            type: string
+            enum: ['access', 'trunk', 'native']
+        - name: vlan_port_id
           in: path
           required: true
           description: The ID of the VLAN port.
@@ -521,7 +568,6 @@ paths:
           required: true
           description: >
             The ID of the simulated network device information
-            to retrieve
           schema:
             type: integer
       responses:
@@ -540,6 +586,14 @@ paths:
                 $ref: "#/components/schemas/Error"
     post:
       summary: Create new network route.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: >
+            The ID of the simulated network device information
+          schema:
+            type: integer
       requestBody:
         description: >
           New network route object.
@@ -593,13 +647,13 @@ paths:
     delete:
       summary: Delete network route.
       parameters:
-        - name: box_id
+        - name: id
           in: path
           required: true
           description: The ID of the simulated network device.
           schema:
             type: integer
-        - name: id
+        - name: route_id
           in: path
           required: true
           description: The ID of the network route.
@@ -766,7 +820,6 @@ components:
       description: >
         Required fields of network ports object.
       type: object
-      properties:
 
     PortOptional:
       description: >
