@@ -10,9 +10,9 @@ path="`dirname \"$0\"`"
 
 # Create a network device (admin operation)
 req='{
-  "vendor": "cisco",
-  "model": "AS5300",
-  "version": "12.2",
+  "vendor": "example",
+  "model": "switch",
+  "version": "1",
   "description": "Example Switch",
   "hostname": "backbone-sw-01",
   "mgmt_address": "10.0.0.12"
@@ -20,7 +20,7 @@ req='{
 
 box_id=$(create_resource "$req" $ENDPOINT/boxen) || exit 1
 
-# Create admin credentials at the switch (admin operation)
+# Create login credentials at the switch (admin operation)
 req='{
   "user": "admin",
   "password": "secret"
@@ -28,9 +28,17 @@ req='{
 
 credential_id=$(create_resource "$req" $ENDPOINT/boxen/$box_id/credentials)
 
+# Create privileged credentials at the switch (admin operation)
+req='{
+  "user": "<enable>",
+  "password": "secret"
+}'
+
+credential_id=$(create_resource "$req" $ENDPOINT/boxen/$box_id/credentials)
+
 # Create a physical port at the network device (admin operation)
 req='{
-  "name": "1/1/1",
+  "name": "1/16",
   "description": "Physical port #1",
   "shutdown": false,
   "speed": "1G",
@@ -43,8 +51,9 @@ port_id=$(create_resource "$req" $ENDPOINT/boxen/$box_id/ports)
 # VLAN port on top of physical port (CLI operation)
 req='{
   "vlan_num": 1,
-  "name": "1/1/1/1",
+  "name": "1/1/16",
   "description": "VLAN access port #1",
+  "role": "access",
   "shutdown": false,
   "mtu": 1495,
   "access_group_in": "",
@@ -56,7 +65,7 @@ req='{
   "mpls_ip": "10.1.1.12"
 }'
 
-vlan_port_id=$(create_resource "$req" $ENDPOINT/boxen/$box_id/ports/$port_id/vlan_ports)
+vlan_port_id=$(create_resource "$req" $ENDPOINT/boxen/$box_id/ports/$port_id/vlan/access)
 
 # Create network route
 req='{

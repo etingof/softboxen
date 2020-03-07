@@ -244,5 +244,3 @@ class RoutesSchema(ma.ModelSchema):
 
     _links = ma.Hyperlinks(
         {'self': ma.URLFor('show_routes', box_id='<box_id>')})
-
-
