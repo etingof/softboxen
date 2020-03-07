@@ -5,6 +5,24 @@ info:
   version: '1.0.0'
   title: 'CLI Simulator REST API'
   description: >
+    Softboxen project aims at simulating admin interface (CLI) of various
+    network devices such as network switches, routers or appliances.
+
+
+    The properties of simulated devices are stored in the models. These
+    models reside in SQL DB and made available via REST API endpoints.
+
+
+    All kinds of simulated network devices share the same basic models.
+    There core properties are collected in the `box` model. Simulated
+    device might have one or more `port` objects to model I/O interfaces.
+    Many other properties of a network device can be modeled such as VLAN
+    interfaces, network routes etc.
+
+
+    The behavioural differences in simulated devices (from CLI perspective)
+    are all taken care of in the CLI frontend modules. These modules are
+    built specifically to mimic particular network device model and version.
 
 servers:
   - url: http://127.0.0.1:5000/softboxen/v1
