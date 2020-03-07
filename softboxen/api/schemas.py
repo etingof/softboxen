@@ -24,41 +24,21 @@ class BoxSchema(ma.ModelSchema):
                   'hostname', 'mgmt_address', 'credentials',
                   'ports', 'routes', '_links')
 
-    class CredentialSchema(ma.ModelSchema):
-        class Meta:
-            model = models.Credential
-            fields = ('_links',)
+    credentials = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor('show_credentials', box_id='<id>')}})
 
-        _links = ma.Hyperlinks(
-            {'self': ma.URLFor(
-                'show_credential', box_id='<box_id>', id='<id>'),
-             'collection': ma.URLFor('show_credentials', box_id='<box_id>')})
+    ports = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor('show_ports', box_id='<id>')}})
 
-    class PortSchema(ma.ModelSchema):
-        class Meta:
-            model = models.Port
-            fields = ('_links',)
-
-        _links = ma.Hyperlinks(
-            {'self': ma.URLFor('show_port', box_id='<box_id>', id='<id>'),
-             'collection': ma.URLFor('show_ports', box_id='<box_id>')})
-
-    class RouteSchema(ma.ModelSchema):
-        class Meta:
-            model = models.Route
-            fields = ('_links',)
-
-        _links = ma.Hyperlinks(
-            {'self': ma.URLFor('show_route', box_id='<box_id>', id='<id>'),
-             'collection': ma.URLFor('show_routes', box_id='<box_id>')})
+    routes = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor('show_routes', box_id='<id>')}})
 
     _links = ma.Hyperlinks(
         {'self': ma.URLFor('show_box', id='<id>'),
          'collection': ma.URLFor('show_boxen')})
-
-    credentials = ma.Nested(CredentialSchema, many=True)
-    ports = ma.Nested(PortSchema, many=True)
-    routes = ma.Nested(RouteSchema, many=True)
 
 
 class BoxenSchema(ma.ModelSchema):
@@ -87,20 +67,13 @@ class CredentialSchema(ma.ModelSchema):
         fields = ('id', 'protocol', 'credential', 'user', 'password',
                   'box', '_links')
 
-    class BoxSchema(ma.ModelSchema):
-        class Meta:
-            model = models.Box
-            fields = ('_links',)
-
-        _links = ma.Hyperlinks(
-            {'self': ma.URLFor('show_box', id='<id>'),
-             'collection': ma.URLFor('show_boxen')})
+    box = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor('show_box', id='<box_id>')}})
 
     _links = ma.Hyperlinks(
         {'self': ma.URLFor('show_credential', box_id='<box_id>', id='<id>'),
          'collection': ma.URLFor('show_credentials', box_id='<box_id>')})
-
-    box = ma.Nested(BoxSchema)
 
 
 class CredentialsSchema(ma.ModelSchema):
@@ -130,35 +103,31 @@ class PortSchema(ma.ModelSchema):
                   'trunk_vlans', 'trunk_native_vlan',
                   'box', '_links')
 
-    class VlanSchema(ma.ModelSchema):
-        class Meta:
-            model = models.VlanPort
-            fields = ('_links',)
+    access_vlan = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor(
+                'show_vlan_ports', box_id='<box_id>', port_id='<id>',
+                role='access')}})
 
-        _links = ma.Hyperlinks(
-            {'self': ma.URLFor(
-                'show_vlan_port', box_id='<box_id>', port_id='<port_id>',
-                id='<id>'),
-             'collection': ma.URLFor(
-                'show_vlan_ports', box_id='<box_id>', port_id='<port_id>')})
+    trunk_vlans = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor(
+                'show_vlan_ports', box_id='<box_id>', port_id='<id>',
+                role='trunk')}})
 
-    class BoxSchema(ma.ModelSchema):
-        class Meta:
-            model = models.Box
-            fields = ('_links',)
+    trunk_native_vlan = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor(
+                'show_vlan_ports', box_id='<box_id>', port_id='<id>',
+                role='native')}})
 
-        _links = ma.Hyperlinks(
-            {'self': ma.URLFor('show_box', id='<id>'),
-             'collection': ma.URLFor('show_boxen')})
+    box = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor('show_box', id='<box_id>')}})
 
     _links = ma.Hyperlinks(
         {'self': ma.URLFor('show_port', box_id='<box_id>', id='<id>'),
          'collection': ma.URLFor('show_ports', box_id='<box_id>')})
-
-    access_vlan = ma.Nested(VlanSchema, many=True)
-    trunk_vlans = ma.Nested(VlanSchema, many=True)
-    trunk_native_vlan = ma.Nested(VlanSchema, many=True)
-    box = ma.Nested(BoxSchema)
 
 
 class PortsSchema(ma.ModelSchema):
@@ -211,9 +180,10 @@ class VlanPortSchema(ma.ModelSchema):
     _links = ma.Hyperlinks({
         'self': ma.URLFor(
             'show_vlan_port', box_id='<box_id>', port_id='<port_id>',
-            id='<id>'),
+            role='<role>', id='<id>'),
         'collection': ma.URLFor(
-            'show_vlan_ports', box_id='<box_id>', port_id='<port_id>')})
+            'show_vlan_ports', box_id='<box_id>', port_id='<port_id>',
+            role='<role>')})
 
     access_on_port = ma.Nested(PortSchema)
     trunk_on_port = ma.Nested(PortSchema)
@@ -233,13 +203,14 @@ class VlanPortsSchema(ma.ModelSchema):
         _links = ma.Hyperlinks(
             {'self': ma.URLFor(
                 'show_vlan_port', box_id='<box_id>', port_id='<port_id>',
-                id='<id>')})
+                role='<role>', id='<id>')})
 
     members = ma.Nested(VlanPortSchema, many=True)
 
     _links = ma.Hyperlinks(
         {'self': ma.URLFor(
-            'show_vlan_ports', box_id='<box_id>', port_id='<port_id>')})
+            'show_vlan_ports', box_id='<box_id>', port_id='<port_id>',
+            role='<role>')})
 
 
 class RouteSchema(ma.ModelSchema):
@@ -247,20 +218,13 @@ class RouteSchema(ma.ModelSchema):
         model = models.Credential
         fields = ('id', 'dst', 'gw', 'metric', 'box', '_links')
 
-    class BoxSchema(ma.ModelSchema):
-        class Meta:
-            model = models.Box
-            fields = ('_links',)
-
-        _links = ma.Hyperlinks(
-            {'self': ma.URLFor('show_box', id='<id>'),
-             'collection': ma.URLFor('show_boxen')})
+    box = ma.Hyperlinks(
+        {'_links': {
+            'self': ma.URLFor('show_box', id='<box_id>')}})
 
     _links = ma.Hyperlinks(
         {'self': ma.URLFor('show_route', box_id='<box_id>', id='<id>'),
          'collection': ma.URLFor('show_routes', box_id='<box_id>')})
-
-    box = ma.Nested(BoxSchema)
 
 
 class RoutesSchema(ma.ModelSchema):

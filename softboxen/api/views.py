@@ -268,12 +268,12 @@ def del_port(box_id, id):
     return flask.Response(status=204)
 
 
-@app.route(PREFIX + '/boxen/<box_id>/ports/<port_id>/vlan_ports')
-def show_vlan_ports(box_id, port_id):
+@app.route(PREFIX + '/boxen/<box_id>/ports/<port_id>/vlan/<role>')
+def show_vlan_ports(box_id, port_id, role):
     vlan_ports_query = (
         models.VlanPort
         .query
-        .filter_by(box_id=box_id, port_id=port_id))
+        .filter_by(box_id=box_id, port_id=port_id, role=role))
 
     vlan_ports_query = search_model(models.VlanPort, vlan_ports_query)
 
@@ -282,6 +282,7 @@ def show_vlan_ports(box_id, port_id):
         'members': vlan_ports,
         'count': len(vlan_ports),
         'box_id': box_id,
+        'role': role,
         'port_id': port_id
     }
 
@@ -290,30 +291,30 @@ def show_vlan_ports(box_id, port_id):
 
 
 @app.route(
-    PREFIX + '/boxen/<box_id>/ports/<port_id>/vlan_ports/<id>',
+    PREFIX + '/boxen/<box_id>/ports/<port_id>/vlan/<role>/<id>',
     methods=['GET'])
-def show_vlan_port(box_id, port_id, id):
+def show_vlan_port(box_id, port_id, role, id):
     vlan_port = (
         models.VlanPort
         .query
-        .filter_by(box_id=box_id, port_id=port_id, id=id)
+        .filter_by(box_id=box_id, port_id=port_id, role=role, id=id)
         .first())
 
     if not vlan_port:
-        raise exceptions.NotFound('Vlan_ports not found')
+        raise exceptions.NotFound('VLAN port not found')
 
     schema = schemas.VlanPortSchema()
     return schema.jsonify(vlan_port), 200
 
 
 @app.route(
-    PREFIX + '/boxen/<box_id>/ports/<port_id>/vlan_ports',
+    PREFIX + '/boxen/<box_id>/ports/<port_id>/vlan/<role>',
     methods=['POST'])
-def new_vlan_port(box_id, port_id):
+def new_vlan_port(box_id, port_id, role):
     req = flask.request.json
 
     vlan_port = models.VlanPort(
-        box_id=box_id, port_id=port_id, **req)
+        box_id=box_id, port_id=port_id, **dict(req, role=role))
     db.session.add(vlan_port)
 
     db.session.commit()
@@ -323,13 +324,13 @@ def new_vlan_port(box_id, port_id):
 
 
 @app.route(
-    PREFIX + '/boxen/<box_id>/ports/<port_id>/vlan_ports/<id>',
+    PREFIX + '/boxen/<box_id>/ports/<port_id>/vlan/<role>/<id>',
     methods=['DELETE'])
-def del_vlan_port(box_id, port_id, id):
+def del_vlan_port(box_id, port_id, role, id):
     vlan_port = (
         models.VlanPort
         .query
-        .filter_by(box_id=box_id, port_id=port_id, id=id)
+        .filter_by(box_id=box_id, port_id=port_id, role=role, id=id)
         .first())
 
     if not vlan_port:

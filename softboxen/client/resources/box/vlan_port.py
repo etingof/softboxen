@@ -19,6 +19,7 @@ class VlanPort(base.Resource):
     vlan_num = base.Field('vlan_num')
     name = base.Field('name')
     description = base.Field('description')
+    role = base.Field('role')
     shutdown = base.Field('shutdown')
     mtu = base.Field('mtu')
     access_group_in = base.Field('access_group_in')

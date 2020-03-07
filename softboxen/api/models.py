@@ -57,6 +57,9 @@ class VlanPort(db.Model):
     vlan_num = db.Column(db.Integer(), nullable=False)
     name = db.Column(db.String(64))
     description = db.Column(db.String())
+    role = db.Column(
+        db.Enum('access', 'trunk', 'native'),
+        nullable=False, default='password')
     shutdown = db.Column(db.Boolean(), default=False)
     mtu = db.Column(db.Integer(), default=1500)
     access_group_in = db.Column(db.String(64))

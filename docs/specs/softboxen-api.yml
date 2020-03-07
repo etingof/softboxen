@@ -345,7 +345,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /boxen/{id}/ports/{port_id}/vlan_ports:
+  /boxen/{id}/ports/{port_id}/vlan/{role}:
     description: >
       This resource represents VLAN ports at the network port of the
       simulated network device.
@@ -365,6 +365,13 @@ paths:
           description: The ID of the network port.
           schema:
             type: integer
+        - name: role
+          in: path
+          required: true
+          description: Role of this VLAN port
+          schema:
+            type: string
+            enum: ['access', 'trunk', 'native']
         - name: name
           in: query
           description: >
@@ -405,7 +412,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /boxen/{id}/ports/{port_id}/vlan_ports/{vlan_port_id}:
+  /boxen/{id}/ports/{port_id}/vlan/{role}/{vlan_port_id}:
     description: >
       This resource represents a single VLAN port object, identified by
       `id` at the network port identified by `port_id` as the simulated
@@ -426,6 +433,13 @@ paths:
             network device.
           schema:
             type: integer
+        - name: role
+          in: path
+          required: true
+          description: Role of this VLAN port
+          schema:
+            type: string
+            enum: ['access', 'trunk', 'native']
         - name: vlan_port_id
           in: path
           required: true
@@ -831,6 +845,10 @@ components:
           description: >
             VLAN ID of this port.
           type: integer
+        role:
+          description: >
+            VLAN port role (access, trunk or native).
+          type: string
 
     VlanPortOptional:
       description: >

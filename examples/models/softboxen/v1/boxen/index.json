@@ -2,8 +2,8 @@
   "count": 1,
   "members": [
     {
-      "vendor": "cisco",
-      "model": "5300",
+      "vendor": "example",
+      "model": "switch",
       "_links": {
         "self": "boxen/1/index.json"
       }
