@@ -59,6 +59,22 @@ def search_model(model, query):
     return query
 
 
+@app.route(PREFIX + '/')
+def show_root():
+    return {
+        'description': 'Softboxen CLI simulation REST API '
+                       '(http://snmplabs.com/softboxen)',
+        'boxen': {
+            '_links': {
+                'self': flask.url_for('show_boxen')
+            }
+        },
+        '_links': {
+            'self': flask.url_for('show_root')
+        }
+    }
+
+
 @app.route(PREFIX + '/boxen')
 def show_boxen():
     boxen_query = (
