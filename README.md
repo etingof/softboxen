@@ -1,5 +1,5 @@
 
-# Network equipment CLI simulator
+# Network equipment CLI emulator
 
 [![PyPI](https://img.shields.io/pypi/v/softboxen.svg?maxAge=1800)](https://pypi.org/project/softboxen)
 [![Python Versions](https://img.shields.io/pypi/pyversions/softboxen.svg)](https://pypi.org/project/softboxen/)
@@ -9,40 +9,41 @@
 
 *This project is being in active development. Not quite usable yet, but worth evaluating!*
 
-The goal of `softboxen` project is to simulate the presence of a large number
+The goal of `softboxen` project is to emulate the presence of a large number
 of network devices (such as switches, routers, modems etc) on the network.
 
-These simulated devices expose their management interfaces and support
+These emulated devices expose their management interfaces and support
 command-line dialogues in a reasonably convincing way. The main use-case
 for `softboxen` is to create a testing environment for network management
 and automation harness.
 
 The system architecture being considered at the moment is this:
 
-![system architecture](docs/arch.png)
+![system architecture](docs/source/arch.png)
 
 ## What's done
 
 The project is being gradually developed. As of this time, the efforts have
 been mostly focused on CLI pieces. This is what is more or less done:
 
-* REST API client library that can also work against locally hosted JSON
-  files.
-* A CLI simulation framework (including models of simulated hardware) and
-  simulation tool
-* An example switch simulation extension package (`softboxen-example-switch`)
-  that can be pip-installed and hooked up by the CLI simulation tool
+* REST API server operating on emulated equipment models.
+* REST API client library that can also work against either REST API server
+  or locally hosted JSON files.
+* A CLI emulation framework (including models of emulated hardware) and
+  emulation tool
+* An example switch emulation extension package (`softboxen-example-switch`)
+  that can be pip-installed and hooked up by the CLI emulation tool
 * A tree of JSON files implementing an example network device
 
 ## What's not done yet:
 
 * A more realistic CLI implementation to see what's missing in the framework
-* Network transport endpoints (telnet, ssh etc.)to access simulated CLIs
+* Network transport endpoints (telnet, ssh etc.)to access emulated CLIs
 
-On top of that, existing simulation data model will need to be extended
+On top of that, existing emulation data model will need to be extended
 and refined as further development might prove.
 
-## How to evaluate simulated example CLI
+## How to evaluate emulated example CLI
 
 The easiest way to play with the example CLI (shipped along with main) distribution
 as the `softboxen-example-switch`) is to run `example` tox job:
@@ -65,10 +66,10 @@ as the `softboxen-example-switch`) is to run `example` tox job:
 Interactive menus will guide you through the implemented commands.
 
 Alternatively, one could fire up `softboxen-restapi` server (that hosts
-simulated network device models) and point `softboxen-cli` CLI frontend
+emulated network device models) and point `softboxen-cli` CLI frontend
 to it.
 
-## How to simulate a new box
+## How to emulate a new box
 
 Adding new network device involves creating one or more `CommandProcessor`
 classes and Jinja2 templates.
@@ -107,24 +108,24 @@ are invoked automatically:
 See softboxen-example-switch [templates](https://github.com/etingof/softboxen/tree/master/examples/softboxen-example-switch/softboxen_example_switch/templates/example/switch/1)
 for more information.
 
-### Simulation data
+### Emulation data
 
-All simulation data should be ultimately hosted and managed by the REST API
+All emulation data should be ultimately hosted and managed by the REST API
 server. While not implemented, and also to simplify development setup,
-simulation data can be placed into a tree of JSON files.
+emulation data can be placed into a tree of JSON files.
 
 A single, universal network device model is used for backing all flavors of
-simulated devices. When instantiated, each model is tied to a specific CLI
+emulated devices. When instantiated, each model is tied to a specific CLI
 frontend flavor (by means of `vendor`, `model` and `version` model attributes)
 and represents a single specific network device identified by `uuid` attribute.
 
-When CLI simulation tool is started, it should be given `uuid` to point to a
+When CLI emulation tool is started, it should be given `uuid` to point to a
 specific instance of a model. Once a model is found, CLI tool will try
 to discover and load required CLI implementation by searching installed
 extension modules by `vendor`, `model` and `version` model attributes.
 
 Instantiating models and tying them up to a specific network device type
-CLI simulation is thought to be done via admin interface of REST API.
+CLI emulation is thought to be done via admin interface of REST API.
 
 See softboxen-example-switch [models](https://github.com/etingof/softboxen/tree/master/examples/models)
 for more information.
