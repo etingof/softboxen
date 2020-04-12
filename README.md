@@ -7,48 +7,33 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/etingof/softboxen.svg)](https://codecov.io/github/etingof/softboxen)
 [![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/etingof/softboxen/master/LICENSE.rst)
 
-*This project is being in active development. Not quite usable yet, but worth evaluating!*
 
 The goal of `softboxen` project is to emulate the presence of a large number
 of network devices (such as switches, routers, modems etc) on the network.
 
 These emulated devices expose their management interfaces and support
 command-line dialogues in a reasonably convincing way. The main use-case
-for `softboxen` is to create a testing environment for network management
+for `softboxen`is to create a testing environment for network management
 and automation harness.
 
-The system architecture being considered at the moment is this:
+For more information on `softboxen` please refer to
+[user documentation](http://snmplabs.com/softboxen).
 
-![system architecture](docs/source/arch.png)
+## How to run example CLI
 
-## What's done
+The easiest way to play with the example CLI (shipped along with main distribution
+as the `softboxen-example-switch`) is to run two tox jobs on the softboxen
+repo - one that starts up REST API server and populates the example model in
+the DB, and the other that installs example CLI implementation package and
+runs CLI frontend against REST API server.
 
-The project is being gradually developed. As of this time, the efforts have
-been mostly focused on CLI pieces. This is what is more or less done:
+In one terminal:
 
-* REST API server operating on emulated equipment models.
-* REST API client library that can also work against either REST API server
-  or locally hosted JSON files.
-* A CLI emulation framework (including models of emulated hardware) and
-  emulation tool
-* An example switch emulation extension package (`softboxen-example-switch`)
-  that can be pip-installed and hooked up by the CLI emulation tool
-* A tree of JSON files implementing an example network device
+    $ tox -e example-restapi -- --keep-running
 
-## What's not done yet:
+In the other terminal:
 
-* A more realistic CLI implementation to see what's missing in the framework
-* Network transport endpoints (telnet, ssh etc.)to access emulated CLIs
-
-On top of that, existing emulation data model will need to be extended
-and refined as further development might prove.
-
-## How to evaluate emulated example CLI
-
-The easiest way to play with the example CLI (shipped along with main) distribution
-as the `softboxen-example-switch`) is to run `example` tox job:
-
-    $ tox -e example-cli
+    $ tox -e example-restcli
     
      / ____|      / _| | | |
     | (___   ___ | |_| |_| |__   _____  _____ _ __
@@ -65,70 +50,10 @@ as the `softboxen-example-switch`) is to run `example` tox job:
 
 Interactive menus will guide you through the implemented commands.
 
-Alternatively, one could fire up `softboxen-restapi` server (that hosts
-emulated network device models) and point `softboxen-cli` CLI frontend
-to it.
+## How to add new emulated CLI
 
-## How to emulate a new box
-
-Adding new network device involves creating one or more `CommandProcessor`
-classes and Jinja2 templates.
-
-### Command processor
-
-Each command processor implements handling of the CLI commands at a single
-nesting level. If you need to implement nesting (e.g. enable->configure), more
-daisy chained `CommandProcessors` will be needed.
-
-Individual commands take shape of `do_` or `do_not_` prefixed methods. Methods
-are invoked in response to user-entered commands. When called, each method is
-passed the entire backend model as a Python object. The method can inspect
-and/or modify the model as desired.
-
-See  softboxen-network-switch [CommandProcessor classes](https://github.com/etingof/softboxen/blob/master/examples/softboxen-example-switch/softboxen_example_switch/main.py#L12)
-for inspiration.
-
-### Command output
-
-Jinja2 templates can be used to model CLI command responses. Some parts of the
-response can be pasted as-is into the template file, while some pieces can be
-substituted at runtime from device model properties or `CommandProcessor`
-context.
-
-By default, Jinja2 templates are organized in a directory tree reflecting
-the nesting of the CLI commands. Individual templates residing in each
-directory are used for rendering command output, some pre-defined templates
-are invoked automatically:
-
-* `on_enter.j2` - when entering this nesting level
-* `on_exit.j2` - when leaving this nesting level
-* `on_cycle.j2` - on each REPR cycle
-* `on_error.j2` - on command execution failure
-
-See softboxen-example-switch [templates](https://github.com/etingof/softboxen/tree/master/examples/softboxen-example-switch/softboxen_example_switch/templates/example/switch/1)
-for more information.
-
-### Emulation data
-
-All emulation data should be ultimately hosted and managed by the REST API
-server. While not implemented, and also to simplify development setup,
-emulation data can be placed into a tree of JSON files.
-
-A single, universal network device model is used for backing all flavors of
-emulated devices. When instantiated, each model is tied to a specific CLI
-frontend flavor (by means of `vendor`, `model` and `version` model attributes)
-and represents a single specific network device identified by `uuid` attribute.
-
-When CLI emulation tool is started, it should be given `uuid` to point to a
-specific instance of a model. Once a model is found, CLI tool will try
-to discover and load required CLI implementation by searching installed
-extension modules by `vendor`, `model` and `version` model attributes.
-
-Instantiating models and tying them up to a specific network device type
-CLI emulation is thought to be done via admin interface of REST API.
-
-See softboxen-example-switch [models](https://github.com/etingof/softboxen/tree/master/examples/models)
-for more information.
+For more information on this matter, please refer to the
+[developer's documentation](http://snmplabs.com/softboxen/development.html).
 
 ## How to get softboxen
 
