@@ -1,0 +1,8 @@
+
+% {{ context.routes|length }} route(s) found
+
+Destination              Gateway                  Metric
+-----------              -------                  ------
+{% for route in context.routes %}
+{{ "%-25s"|format(route.dst) }}{{ "%-25s"|format(route.gw) }}{{ "%-5s"|format(route.metric) }}
+{% endfor %}

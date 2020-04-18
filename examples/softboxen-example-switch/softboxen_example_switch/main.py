@@ -132,6 +132,13 @@ class ConfigureCommandProcessor(BaseCommandProcessor):
         subprocessor.loop(
             context=dict(context, port=port), raise_on_exit=False)
 
+    def do_route(self, command, *args, context=None):
+        subprocessor = self._create_subprocessor(
+            ConfigureRouteCommandProcessor, 'login', 'mainloop',
+            'enable', 'admin', 'configure', 'route')
+
+        subprocessor.loop(context=context, raise_on_exit=False)
+
 
 class ConfigureIfEthCommandProcessor(BaseCommandProcessor):
 
@@ -142,3 +149,13 @@ class ConfigureIfEthCommandProcessor(BaseCommandProcessor):
         port = context.pop('port')
 
         port.add_access_vlan(name=vlan_name)
+
+
+class ConfigureRouteCommandProcessor(BaseCommandProcessor):
+
+    def do_table_show(self, command, *args, context=None):
+        text = self._render(
+            'show_routes',
+            context=dict(context, routes=self._model.routes))
+
+        self._write(text)
