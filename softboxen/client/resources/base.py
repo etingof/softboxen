@@ -356,6 +356,9 @@ class ResourceCollection(Resource):
         """
         return self._resource_type(self._conn, identity)
 
+    def __len__(self):
+        return len(self.members_identities)
+
     def __iter__(self):
         """Iterate over collection members."""
         for identity in self.members_identities:
