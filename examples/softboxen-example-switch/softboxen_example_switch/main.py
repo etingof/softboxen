@@ -118,7 +118,7 @@ class AdminCommandProcessor(BaseCommandProcessor):
         subprocessor.loop(context=context, raise_on_exit=False)
 
 
-class ConfigureCommandProcessor(BaseCommandProcessor):
+class ConfigureInterfaceMixIn:
 
     def do_interface(self, command, *args, context=None):
         port_name, = self._dissect(args, 'ethernet', str)
@@ -130,17 +130,47 @@ class ConfigureCommandProcessor(BaseCommandProcessor):
             'enable', 'admin', 'configure', 'interface_ethernet')
 
         subprocessor.loop(
-            context=dict(context, port=port), raise_on_exit=False)
+            context=dict(context, port=port), raise_on_exit=False,
+            return_to=ConfigureCommandProcessor)
+
+
+class ConfigureRouteMixIn:
 
     def do_route(self, command, *args, context=None):
         subprocessor = self._create_subprocessor(
             ConfigureRouteCommandProcessor, 'login', 'mainloop',
             'enable', 'admin', 'configure', 'route')
 
-        subprocessor.loop(context=context, raise_on_exit=False)
+        subprocessor.loop(
+            context=context, raise_on_exit=False,
+            return_to=ConfigureCommandProcessor)
 
 
-class ConfigureIfEthCommandProcessor(BaseCommandProcessor):
+class ConfigureCommandProcessor(
+        BaseCommandProcessor, ConfigureInterfaceMixIn, ConfigureRouteMixIn):
+    """Dual command CommandProcessor.
+
+    This CommandProcessor supports two sub-menus at the same menu level.
+
+        configure -> interface ...
+                  -> route
+
+    Both sub-menus exit back to this CommandProcessor.
+    """
+
+
+class ConfigureIfEthCommandProcessor(
+        BaseCommandProcessor, ConfigureRouteMixIn):
+    """Dual command CommandProcessor.
+
+    This CommandProcessor supports one command and one-submenu at the
+    same menu level.
+
+        interface -> switchport ...
+                  -> route
+
+    Sub-menu exits back to `ConfigureCommandProcessor`, not to this one.
+    """
 
     def do_switchport(self, command, *args, context=None):
         vlan_name, = self._dissect(
@@ -151,7 +181,18 @@ class ConfigureIfEthCommandProcessor(BaseCommandProcessor):
         port.add_access_vlan(name=vlan_name)
 
 
-class ConfigureRouteCommandProcessor(BaseCommandProcessor):
+class ConfigureRouteCommandProcessor(
+        BaseCommandProcessor, ConfigureInterfaceMixIn):
+    """Dual command CommandProcessor.
+
+    This CommandProcessor supports one command and one-submenu at the
+    same menu level.
+
+        interface -> table show
+                  -> interface ...
+
+    Sub-menu exits back to `ConfigureCommandProcessor`, not to this one.
+    """
 
     def do_table_show(self, command, *args, context=None):
         text = self._render(

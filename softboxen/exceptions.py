@@ -68,6 +68,18 @@ class TerminalExitError(SoftboxenError):
 
     message = 'Terminal connection closed'
 
+    def __init__(self, **kwargs):
+        super(TerminalExitError, self).__init__(**kwargs)
+        self._return_to = None
+
+    @property
+    def return_to(self):
+        return self._return_to
+
+    @return_to.setter
+    def return_to(self, return_to):
+        self._return_to = return_to
+
 
 class TemplateError(SoftboxenError):
     """Raise on template rendering error."""
