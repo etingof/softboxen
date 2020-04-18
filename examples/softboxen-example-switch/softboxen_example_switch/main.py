@@ -67,7 +67,7 @@ class UserViewCommandProcessor(BaseCommandProcessor):
         subprocessor = self._create_subprocessor(
             EnableCommandProcessor, 'login', 'mainloop', 'enable')
 
-        subprocessor.loop(context=context, raise_on_exit=False)
+        subprocessor.loop(context=context, return_to=UserViewCommandProcessor)
 
 
 class EnableCommandProcessor(ReadInputCommandProcessor):
@@ -115,7 +115,7 @@ class AdminCommandProcessor(BaseCommandProcessor):
             ConfigureCommandProcessor, 'login', 'mainloop',
             'enable', 'admin', 'configure')
 
-        subprocessor.loop(context=context, raise_on_exit=False)
+        subprocessor.loop(context=context, return_to=AdminCommandProcessor)
 
 
 class ConfigureInterfaceMixIn:
@@ -130,8 +130,7 @@ class ConfigureInterfaceMixIn:
             'enable', 'admin', 'configure', 'interface_ethernet')
 
         subprocessor.loop(
-            context=dict(context, port=port), raise_on_exit=False,
-            return_to=ConfigureCommandProcessor)
+            context=dict(context, port=port), return_to=ConfigureCommandProcessor)
 
 
 class ConfigureRouteMixIn:
@@ -141,9 +140,7 @@ class ConfigureRouteMixIn:
             ConfigureRouteCommandProcessor, 'login', 'mainloop',
             'enable', 'admin', 'configure', 'route')
 
-        subprocessor.loop(
-            context=context, raise_on_exit=False,
-            return_to=ConfigureCommandProcessor)
+        subprocessor.loop(context=context, return_to=ConfigureCommandProcessor)
 
 
 class ConfigureCommandProcessor(

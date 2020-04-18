@@ -143,7 +143,7 @@ class CommandProcessor:
     def process_command(self, line, context):
         self._parse_and_execute_command(line, context)
 
-    def loop(self, context=None, raise_on_exit=True, return_to=None):
+    def loop(self, context=None, return_to=None):
         if context is None:
             context = {}
 
@@ -162,21 +162,14 @@ class CommandProcessor:
                 self.on_error(dict(context, command=exc.command))
 
             except exceptions.TerminalExitError as exc:
-                if raise_on_exit:
-                    raise
-
-                if return_to:
+                if not exc.return_to:
                     exc.return_to = return_to
 
-                if exc.return_to:
-                    if not isinstance(self, exc.return_to):
-                        raise exc
+                if not exc.return_to or not isinstance(self, exc.return_to):
+                    raise exc
 
-                    # This is the first instance of the desired
-                    # CommandProcessor to unwind to, continuing
-
-                else:
-                    break
+                # This is the first instance of the desired
+                # CommandProcessor to unwind to, continuing
 
             self.on_cycle(context)
 

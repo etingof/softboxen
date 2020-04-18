@@ -357,6 +357,7 @@ class ResourceCollection(Resource):
         return self._resource_type(self._conn, identity)
 
     def __len__(self):
+        """Return the size of the collection."""
         return len(self.members_identities)
 
     def __iter__(self):

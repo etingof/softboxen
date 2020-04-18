@@ -145,7 +145,7 @@ method will be invoked instead (if defined).
         subprocessor = self._create_subprocessor(
             EnableCommandProcessor, 'login', 'mainloop', 'enable')
 
-        subprocessor.loop(context=context, raise_on_exit=False)
+        subprocessor.loop(context=context)
 
 
 Parsing user input
